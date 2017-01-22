@@ -15,9 +15,6 @@ def insert_activity(activity):
     insertion = collection.insert_one(activity)
     print insertion
 
-activity = {"test": 15
-    }
-
 def list_activities():
     collection = get_activity_collection( get_DB())
     for activity in collection.find():
