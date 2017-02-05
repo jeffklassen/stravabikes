@@ -42,3 +42,23 @@ fullStravaActivities()
         return allStravaActivities;
     })
     
+
+async function getAthlete(authId){
+    const stravaAthleteUrl = 'https://www.strava.com/api/v3/athlete';
+    authId = '3db92dcc937476ff0a68ab3cc6c1c47f4bd988e6';
+    const headers = { Authorization: `Bearer ${authId}` };
+
+    try{
+        let response = await request
+        .get(stravaAthleteURL)
+        .set(headers)
+
+        let athlete = response.body;
+
+    } catch (err){
+        throw err;
+    }
+    return athlete
+};
+
+console.log(getAthlete())
