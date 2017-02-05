@@ -26,11 +26,16 @@ async function insertObjectToCollection(obj, collName) {
 }
 
 async function insertActivities(activities) {
+    let db = await getDB();
+    let collection = await getCollection(db, 'activity');
+    let batch = collection.initializeUnorderedBulkOp();
+    
     for (let activity of activities) {
-        //console.log('inserting ' ,activity)
-        await insertObjectToCollection(activity, 'activity');
+        batch.find({ _id: activity._id }).upsert().updateOne(activity);
+        
     }
-    //await collection.updateMany({}, activities, );
+    await batch.execute();
+    db.close();
     return activities;
 
 }
