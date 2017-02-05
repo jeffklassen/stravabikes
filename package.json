@@ -1,6 +1,6 @@
 {
   "name": "stravanal",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "",
   "main": "./server/index.js",
   "scripts": {
@@ -13,7 +13,9 @@
     "babel-cli": "^6.22.2",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-es2016": "^6.22.0",
-    "babel-preset-es2017": "^6.22.0"
+    "babel-preset-es2017": "^6.22.0",
+    "mongodb": "^2.2.22",
+    "superagent": "^3.4.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
