@@ -9,7 +9,7 @@ async function fullStravaActivities() {
     const headers = { Authorization: `Bearer ${authId}` };
 
 
-    let params = { per_page: 25 };
+    let params = { per_page: 200 };
     let stravaActivities = [];
     let morePages = true;
     let pageCounter = 1;
@@ -24,6 +24,7 @@ async function fullStravaActivities() {
             let activities = response.body;
             stravaActivities = stravaActivities.concat(activities);
             pageCounter++;
+            console.log('page returned, got', activities.length)
             if (activities.length < params.per_page) {
                 morePages = false;
             }
