@@ -21,7 +21,11 @@ def main():
     #insert_strava_db(data)
  
     #print activities in DB
-    mongoclient.list_athlete_activities(3231940)
+    #mongoclient.list_athlete_activities(3231940)
+
+    #get athlete
+    response = serviceCalls.getAthlete('3db92dcc937476ff0a68ab3cc6c1c47f4bd988e6')
+    print(response)
     
 main()
 
