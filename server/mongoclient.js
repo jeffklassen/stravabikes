@@ -1,58 +1,53 @@
 import { MongoClient } from 'mongodb';
 
 const dbURL = 'mongodb://localhost:27017/strava';
-let db;
-const getDB = () => {
-    return MongoClient.connect(dbURL)
-        .then(database => {
-            db = database;
-            return db;
-        });
-};
-const handleErr = err => {
-    db.close();
-    throw err;
-};
-const getCollection = (collName) => {
+
+async function getDB() {
+    let db = await MongoClient.connect(dbURL);
+    return db;
+}
+
+async function getCollection(db, collName) {
     if (typeof collName == 'string' && (collName == 'activity' || collName == 'athlete')) {
-        return getDB().then(db => {
-            return db.collection(collName);
-        });
+        return db.collection(collName);
     }
-};
+    else {
+        return Promise.reject('collname must be either activity or athlete');
+    }
+}
 
-const insertObjectToCollection = (object, collection) => {
-    return getCollection(collection)
-        .then(collection => {
-            return collection.insertOne(object);
-        })
-        .then(() => {
-            db.close();
-            return object;
-        })
-        .catch(handleErr);
-};
+async function insertObjectToCollection(obj, collName) {
+    let db = await getDB();
+    let collection = await getCollection(db, collName);
 
-const insertActivity = (activity) => {
-    return insertObjectToCollection(activity, 'activity');
-};
+    await collection.insertOne(obj);
+    db.close();
+    return obj;
+}
+
+async function insertActivities(activities) {
+    let db = await getDB();
+    let collection = await getCollection(db, 'activity');
+    await collection.insertMany(activities);
+    db.close();
+    return activities;
+
+}
 const insertAthlete = (athlete) => {
     return insertObjectToCollection(athlete, 'athlete');
 };
 
-const listAthleteActivities = (athleteId) => {
-    return getCollection('activity')
-        .then(activityColl => {
-            return activityColl
-                .find({ 'athlete.id': { '$eq': athleteId } })
-                .toArray();
-        })
-        .then(activities => {
-            db.close();
-            return activities;
-        })
-        .catch(handleErr);
-};
-listAthleteActivities(1234).then(console.log);
+async function listAthleteActivities(athleteId) {
+    let db = await getDB();
+    let collection = await getCollection(db, 'activity');
+    let activities = await collection.find({ 'athlete.id': { '$eq': athleteId } })
+        .toArray();
 
-export { insertActivity, insertAthlete, listAthleteActivities };
+    db.close();
+    return activities;
+
+}
+
+
+
+export { insertActivities, insertAthlete, listAthleteActivities };
