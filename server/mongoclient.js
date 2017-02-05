@@ -20,16 +20,17 @@ async function insertObjectToCollection(obj, collName) {
     let db = await getDB();
     let collection = await getCollection(db, collName);
 
-    await collection.insertOne(obj);
+    await collection.update({ _id: obj._id }, obj, { upsert: true });
     db.close();
     return obj;
 }
 
 async function insertActivities(activities) {
-    let db = await getDB();
-    let collection = await getCollection(db, 'activity');
-    await collection.insertMany(activities);
-    db.close();
+    for (let activity of activities) {
+        //console.log('inserting ' ,activity)
+        await insertObjectToCollection(activity, 'activity');
+    }
+    //await collection.updateMany({}, activities, );
     return activities;
 
 }
