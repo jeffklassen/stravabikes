@@ -82,4 +82,14 @@ def countRecords(records):
     return(count)
 
 
-    
+def getAthlete(authID):
+     strava_athlete = 'https://www.strava.com/api/v3/athlete'
+     headers = {"Authorization": "Bearer {}".format(authID)}
+     response = requests.get(strava_athlete, headers = headers)
+
+     try:
+        stravaAthlete = response.json()
+     except:
+        raise ValueError('Unexpected response from Strava : Not a JSON object.')
+
+     return(stravaAthlete)
