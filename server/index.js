@@ -10,10 +10,13 @@ async function grabData() {
         return activity;
     });
 
+//rewrite so that athlete call can happen concurrent to activities
+//create another asyn function. then call seperately
 
     console.log('inserting activities');
     await insertActivities(stravaActivities);
     console.log('retrieving athlete');
+
     let athlete = await getAthlete();
     athlete._id = athlete.id;
     console.log('inserting athlete');

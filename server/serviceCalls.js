@@ -56,19 +56,6 @@ async function getAthlete() {
     return athlete;
 }
 
-//check if the athlete exists in the DB
-//if no, create athlete, if yes, rewrite athlete record
-async function checkAthlete(){
-}
-
-
-//If an athlete already exists in the DB, want to query Strava for
-//any new activities 
-async function updateActivities() {
-    //some sort of compare b/w DB records and Strava records
-
-}
-
 /*fullStravaActivities()
     .then(function (allStravaActivities) {
         console.log(allStravaActivities.length);
