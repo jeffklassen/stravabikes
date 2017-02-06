@@ -1,10 +1,10 @@
 // python-> javascript re-write code goes here. This is your main 
-import { insertActivities, insertAthlete, listAthleteActivities } from './mongoClient';
-import { getAthlete, fullStravaActivities } from './serviceCalls';
+import { insertActivities, insertAthlete, listAthleteActivities } from './clients/mongoClient';
+import { getAthlete, fullStravaActivities } from './clients/stravaclient';
 
 async function grabData() {
     console.log('retrieving activities');
-    let stravaActivities = await fullStravaActivities()
+    let stravaActivities = await fullStravaActivities();
     stravaActivities = stravaActivities.map(activity => {
         activity._id = activity.id;
         return activity;
