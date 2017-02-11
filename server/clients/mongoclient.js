@@ -51,7 +51,6 @@ async function listAthleteActivities(athleteId) {
 
     db.close();
     return activities;
-
 }
 
 
