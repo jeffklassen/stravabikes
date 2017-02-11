@@ -53,6 +53,21 @@ async function listAthleteActivities(athleteId) {
     return activities;
 }
 
+async function getAthlete(athleteId) {
+    let db = await getDB();
+    let collection = await getCollection(db, 'athlete');
+    let athlete = await collection.findOne({ '_id': { '$eq': athleteId } })
+        ;
+
+    db.close();
+    return athlete;
+}
 
 
-export { insertActivities, insertAthlete, listAthleteActivities };
+
+export {
+    insertActivities,
+    insertAthlete,
+    listAthleteActivities,
+    getAthlete
+};
