@@ -5,7 +5,7 @@ import BikeInfoSurface  from './BikeInfoSurface.jsx';
 
 const App = () => {
     return (
-        <div>
+        <div className="container">
             <Header vendorName="Strava"/>
             <BikeInfoSurface />
         </div>
