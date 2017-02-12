@@ -24,7 +24,7 @@ async function grabData() {
     console.log('done');
 }
 
-//grabData();
+grabData();
 
 listAthleteActivities(3231940)
     .then(activities => {

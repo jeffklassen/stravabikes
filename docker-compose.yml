@@ -6,13 +6,3 @@ services:
       - 27017:27017
     volumes:
       - ./data:/data/db
-  node-app: 
-    build: .
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: npm start
-    ports:
-      - 3000:3000
- 
- 
