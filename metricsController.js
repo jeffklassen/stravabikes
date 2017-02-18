@@ -12,7 +12,7 @@ const metricsController = {
                      totalElevation += activity.total_elevation_gain;
                 })
                     
-console.log(totaElevation)
+console.log(totalElevation)
         return bikeList.length;
     });
 
