@@ -29,10 +29,10 @@ async function insertActivities(activities) {
     let db = await getDB();
     let collection = await getCollection(db, 'activity');
     let batch = collection.initializeUnorderedBulkOp();
-    
+
     for (let activity of activities) {
         batch.find({ _id: activity._id }).upsert().updateOne(activity);
-        
+
     }
     await batch.execute();
     db.close();
@@ -46,7 +46,7 @@ const insertAthlete = (athlete) => {
 async function listAthleteActivities(athleteId) {
     let db = await getDB();
     let collection = await getCollection(db, 'activity');
-    let activities = await collection.find({ 'athlete.id': { '$eq': athleteId } })
+    let activities = await collection.find({ 'athlete.id': athleteId, type: 'Ride' })
         .toArray();
 
     db.close();
@@ -56,18 +56,29 @@ async function listAthleteActivities(athleteId) {
 async function getAthlete(athleteId) {
     let db = await getDB();
     let collection = await getCollection(db, 'athlete');
-    let athlete = await collection.findOne({ '_id': { '$eq': athleteId } })
-        ;
+    let athlete = await collection.findOne({ '_id': { '$eq': athleteId } });
 
     db.close();
     return athlete;
 }
 
+async function rideAggregation(athleteId, field) {
+    let db = await getDB();
+    let collection = await getCollection(db, 'activity');
+    let prom = await collection.aggregate([
+        { $match: { 'athlete.id': athleteId, type: 'Ride' } },
+        { $group: { _id: '$gear_id', total: { $sum: '$' + field } } }
+    ]).toArray();
+
+    db.close();
+    return prom;
+}
 
 
 export {
     insertActivities,
     insertAthlete,
     listAthleteActivities,
-    getAthlete
+    getAthlete,
+    rideAggregation
 };

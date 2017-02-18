@@ -1,5 +1,5 @@
 // python-> javascript re-write code goes here. This is your main 
-import { insertActivities, insertAthlete, listAthleteActivities } from './mongoclient';
+import { insertActivities, insertAthlete, listAthleteActivities, rideAggregation } from './mongoclient';
 import { getAthlete, fullStravaActivities } from './stravaclient';
 
 async function grabData() {
@@ -26,20 +26,7 @@ async function grabData() {
 
 grabData();
 
-listAthleteActivities(3231940)
-    .then(activities => {
-        let ridesWithBikes = activities
-            .filter(activity => activity.type === 'Ride')
-            .filter(ride => typeof ride.gear_id === 'string');
+//listAthleteActivities(3231940).then(console.log);
 
-        let bikeList = ridesWithBikes.reduce((bl, ride) => {
-            if (!bl.includes(ride.gear_id)) {
-                bl.push(ride.gear_id);
-            }
-            return bl;
-        }, []);
-
-       
-        console.log(bikeList.length);
-        return bikeList.length;
-    });
+rideAggregation(3231940, 'distance')
+    .then(res => res.map( m =>console.log(m._id,  m.total/1609.344))).catch(console.log);
