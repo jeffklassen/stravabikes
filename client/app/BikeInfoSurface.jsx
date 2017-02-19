@@ -18,7 +18,6 @@ class BikeInfoSurface extends React.Component {
             });
     }
 
-
     render() {
         return (
 
@@ -48,7 +47,7 @@ const AthleteSummary = ({athlete, summaries}) => {
                 <img src={athlete.profile} className="pull-left" style={avatarStyle} />
                 <div className="col-md-3">
                     <h2 className="row"> {`${athlete.firstname} ${athlete.lastname}`}</h2>
-                    <span className="row" >Bike Count: {athlete.bikes.length} </span>
+                    <span className="row" >{athlete.bikes.length} bikes </span>
                 </div>
                 <div className="summary">
                     {summaries
@@ -69,8 +68,8 @@ const SummaryComponent = ({summary}) => {
     return (
 
         <div className="summaryComponent" style={{ display: 'inline-block', padding: '14px' }}>
+            <div style={block}>{summary.total}</div>
             <div style={block}>{summary.field}</div>
-            <div style={block}>Total {summary.total}</div>
         </div>
     );
 };

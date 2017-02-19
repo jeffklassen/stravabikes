@@ -17,7 +17,7 @@ const mapBikeIdToBike = (athlete, element) => {
 //mapping database fields to front-end names
 const fieldMapping = {
     distance: { display: 'Distance', fieldName: 'distance' },
-    elevation: { display: 'Elevation Gain', fieldName: 'total_elevation_gain' },
+    elevation: { display: 'Elevation', fieldName: 'total_elevation_gain' },
     time: { display: 'Time', fieldName: 'moving_time' }
 };
 
