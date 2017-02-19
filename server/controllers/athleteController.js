@@ -1,5 +1,6 @@
 import { getAthlete, rideAggregation } from '../clients/mongoclient';
 
+//match bikeId in activities to bikeName in athlete profile
 const mapBikeIdToBike = (athlete, element) => {
     let name;
     let correctBike = athlete.bikes.reduce(b => {
@@ -13,16 +14,19 @@ const mapBikeIdToBike = (athlete, element) => {
     return element;
 };
 
+//mapping database fields to front-end names
 const fieldMapping = {
     distance: { display: 'Distance', fieldName: 'distance' },
     elevation: { display: 'Elevation Gain', fieldName: 'total_elevation_gain' },
     time: { display: 'Time', fieldName: 'moving_time' }
 };
 
+
 const athleteController = {
     getAthlete: () => {
         return getAthlete(3231940);
     },
+    //pull athlete profile, grab sum of relevant summary fields (time, elevation, distance) by bike from DB
     getSummary: () => {
         return Promise.all([
             getAthlete(3231940),
@@ -34,6 +38,7 @@ const athleteController = {
             .then(data => {
                 let athlete = data[0];
 
+                //drill down to each bike/metric object and add bikeName field
                 let modifiedaggregations = [data[1], data[2], data[3]]
                     .map(aggregation => {
                         return aggregation
@@ -41,11 +46,14 @@ const athleteController = {
                                 element = mapBikeIdToBike(athlete, element);
                                 return element;
                             })
+                            //total up the metrics for all bikes
                             .reduce((reducer, element) => {
                                 if (!reducer.total) {
                                     reducer.total = 0;
                                 }
                                 reducer.total += element.total;
+                                
+                                //map the metric field name to front-end name
                                 if (!reducer.field) {
                                     reducer.field = Object.keys(fieldMapping)
                                         .reduce((nestedReducer, key) => {
