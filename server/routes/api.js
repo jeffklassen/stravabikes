@@ -8,13 +8,6 @@ let apiRoutes = express.Router();
 
 module.exports = app => {
 
-    apiRoutes.get('/bikecount', (req, res) => {
-        bikeController.getBikeCount()
-            .then(count => {
-                res.send({ bikeCount: count });
-            });
-
-    });
 
     apiRoutes.get('/athlete', (req, res) => {
         athleteController.getAthlete()
