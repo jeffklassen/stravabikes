@@ -67,7 +67,8 @@ async function rideAggregation(athleteId, field) {
     let collection = await getCollection(db, 'activity');
     let prom = await collection.aggregate([
         { $match: { 'athlete.id': athleteId, type: 'Ride' } },
-        { $group: { _id: '$gear_id', total: { $sum: '$' + field } } }
+        { $group: { _id: '$gear_id', total: { $sum: '$' + field } } },
+        { $project: { field: field , total:1} }
     ]).toArray();
 
     db.close();
