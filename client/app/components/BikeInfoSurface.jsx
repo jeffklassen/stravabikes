@@ -9,6 +9,8 @@ class BikeInfoSurface extends React.Component {
         this.state = { summary: {}, athlete: null };
 
         this.loadAthlete = this.loadAthlete.bind(this);
+        this.convertMetric = this.convertMetric.bind(this);
+
         this.loadAthlete();
     }
     loadAthlete() {
@@ -20,6 +22,13 @@ class BikeInfoSurface extends React.Component {
                 let activities = activityResponse.body;
 
                 let bikes = athleteSummary.athlete.bikes;
+                let metric;
+
+                if (athleteSummary.measurement_preference === 'meters'){
+                    metric = true;
+                } else{
+                    metric = false;
+                };
 
                 //activities = activities.filter(activity => activity.gear_id === firstBikeId);
 
@@ -41,15 +50,15 @@ class BikeInfoSurface extends React.Component {
                     }
 
                     //put bikeId for all bikes in list, then get the bike id's index for the specific activity
-                    let activityIndex = bikes.map(bike => bike.id).indexOf(activity.gear_id) ;
+                    let activityIndex = bikes.map(bike => bike.id).indexOf(activity.gear_id);
 
 
                     //for every bike, take the bike and its index in bikes
                     let data = bikes.map((bike, index) => {
                         //get previous value at bike index
                         let previousValue = 0;
-                        if (previousRow && previousRow[index+1]) {
-                            previousValue = previousRow[index+1];
+                        if (previousRow && previousRow[index + 1]) {
+                            previousValue = previousRow[index + 1];
                         }
 
                         //only update the correct bike sum if indexes match
@@ -66,10 +75,25 @@ class BikeInfoSurface extends React.Component {
                 }, []);
 
                 console.log(allBikeData);
+                allBikeData = this.convertMetric(metric,allBikeData)
                 this.setState({ allBikeData, columns });
 
             });
 
+    }
+    convertMetric(metric, allBikeData) {
+        let updatedBikeTable = allBikeData.map(row => {
+            let updatedRow = row.slice(1).map(record => {
+                if (metric) {
+                    record = record * .001;
+                } else {
+                    record = record * .000621371;
+                }
+                return record
+            });
+            return [row[0], ...updatedRow];
+        })
+        return updatedBikeTable
     }
 
     render() {
@@ -86,12 +110,12 @@ class BikeInfoSurface extends React.Component {
                                 chartType="LineChart"
                                 columns={this.state.columns}
                                 rows={this.state.allBikeData}
-                                options={{}}
+                                options={{title:'Bike Mileage',  vAxis: {title: 'Distance'}}}
                                 graph_id="ScatterChart"
                                 width="100%"
                                 height="400px"
                                 legend_toggle
-                            />
+                                />
                         ) : null}
                     </div>
 
