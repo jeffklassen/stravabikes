@@ -23,19 +23,17 @@ class BikeInfoSurface extends React.Component {
     render() {
         return (
 
-            this.state.athlete ? (<div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="row">
-                            <hr />
-                            <AthleteSummary athlete={this.state.athlete} summaries={this.state.summaries} />
-
-                        </div>
-                        <hr />
+            this.state.athlete ? (
+                <div>
+                    <div className="row">
+                        <AthleteSummary athlete={this.state.athlete} summaries={this.state.summaries} />
                     </div>
-                    <span>Chart goes here </span>
+                    <div className="row">
+                        <span>Chart goes here </span>
+                    </div>
+
                 </div>
-            </div>) : null
+            ) : null
 
         );
     }
