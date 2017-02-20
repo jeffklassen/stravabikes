@@ -1,16 +1,16 @@
 import { getAthlete, rideAggregation, listAthleteRides } from '../clients/mongoclient';
 
 //match bikeId in activities to bikeName in athlete profile
-const mapBikeIdToBike = (athlete, element) => {
+const mapBikeIdToBike = (athlete, element, key) => {
     let name;
     let correctBike = athlete.bikes.reduce(b => {
-        return b.id == element._id;
+        return b.id == element[key];
     });
     if (correctBike.length == 1) {
         name = correctBike[0].name;
     }
 
-    element.name = name;
+    element.bikeName = name;
     return element;
 };
 
@@ -27,7 +27,15 @@ const athleteController = {
         return getAthlete(3231940);
     },
     getActivities: () => {
-        return listAthleteRides(3231940);
+        return listAthleteRides(3231940)
+            .then(activities => {
+                activities = activities.map(activity => {
+
+
+                    return activity;
+                });
+                return activities;
+            });
     },
     //pull athlete profile, grab sum of relevant summary fields (time, elevation, distance) by bike from DB
     getSummary: () => {
@@ -45,17 +53,14 @@ const athleteController = {
                 let modifiedaggregations = [data[1], data[2], data[3]]
                     .map(aggregation => {
                         return aggregation
-                            .map(element => {
-                                element = mapBikeIdToBike(athlete, element);
-                                return element;
-                            })
+                        
                             //total up the metrics for all bikes
                             .reduce((reducer, element) => {
                                 if (!reducer.total) {
                                     reducer.total = 0;
                                 }
                                 reducer.total += element.total;
-                                
+
                                 //map the metric field name to front-end name
                                 if (!reducer.field) {
                                     reducer.field = Object.keys(fieldMapping)
