@@ -17,19 +17,19 @@ class BikeInfoSurface extends React.Component {
         Promise.all([request.get('/api/athleteSummary'), request.get('/api/activities')])
             .then(([summaryResponse, activityResponse]) => {
                 let athleteSummary = summaryResponse.body;
+                
                 this.setState({ athlete: athleteSummary.athlete, summaries: athleteSummary.summary });
 
                 let activities = activityResponse.body;
 
                 let bikes = athleteSummary.athlete.bikes;
                 let metric;
-
-                if (athleteSummary.measurement_preference === 'meters'){
+               
+                if (athleteSummary.athlete.measurement_preference === 'meters'){
                     metric = true;
                 } else{
                     metric = false;
                 };
-
                 //activities = activities.filter(activity => activity.gear_id === firstBikeId);
 
                 console.log(activities.length);
@@ -102,7 +102,7 @@ class BikeInfoSurface extends React.Component {
             this.state.athlete ? (
                 <div>
                     <div className="row">
-                        <AthleteSummary athlete={this.state.athlete} summaries={this.state.summaries} />
+                        <AthleteSummary athlete={this.state.athlete} summaries={this.state.summaries}/>
                     </div>
                     <div className="row">
                         {this.state.allBikeData ? (

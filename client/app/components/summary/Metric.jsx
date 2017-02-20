@@ -5,7 +5,7 @@ const Metric = ({summary}) => {
     const fieldStyle = { display: 'block' };
     const summaryStyle = { fontSize: 18, fontWeight: 700, marginLeft: '120px', display: 'inline-block', padding: '14px' };
     return (
-
+//need to add conversion logic
         <div className="summary" style={summaryStyle}>
             <div style={metricStyle}>{summary.total}</div>
             <div style={fieldStyle}>{summary.field}</div>

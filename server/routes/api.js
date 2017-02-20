@@ -1,7 +1,6 @@
 const express = require('express');
 const config = require('../config/config').options;
 
-import bikeController from '../controllers/bikeController';
 import athleteController from '../controllers/athleteController';
 let clientRoutes = express.Router();
 let apiRoutes = express.Router();
