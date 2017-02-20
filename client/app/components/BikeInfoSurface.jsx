@@ -29,7 +29,7 @@ class BikeInfoSurface extends React.Component {
                     metric = true;
                 } else{
                     metric = false;
-                };
+                }
                 //activities = activities.filter(activity => activity.gear_id === firstBikeId);
 
                 console.log(activities.length);
@@ -89,11 +89,11 @@ class BikeInfoSurface extends React.Component {
                 } else {
                     record = record * .000621371;
                 }
-                return record
+                return record;
             });
             return [row[0], ...updatedRow];
-        })
-        return updatedBikeTable
+        });
+        return updatedBikeTable;
     }
 
     render() {
