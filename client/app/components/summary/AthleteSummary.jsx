@@ -3,7 +3,7 @@ import Metric from './Metric.jsx';
 
 const AthleteSummary = ({athlete, summaries}) => {
     const avatarStyle = { float: 'left', marginRight: '15px', height: '100px', width: '100px', borderRadius: '50%' };
-    const bikeCountStyle = { fontWeight: '700', fontSize: '18', color: 'fc4c02' };
+    const bikeCountStyle = { fontWeight: 700, fontSize: 18, color: 'fc4c02' };
     return (
         <div className="col-md-12">
             <hr />
