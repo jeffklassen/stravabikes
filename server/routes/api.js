@@ -27,6 +27,17 @@ module.exports = app => {
             });
 
     });
+    apiRoutes.get('/activities', (req, res) => {
+        athleteController.getActivities()
+            .then(data => {
+                res.send(data);
+            })
+            .catch(err => {
+                res.status(500);
+                res.send(err);
+            });
+
+    });
 
     app.use('/api', apiRoutes);
 

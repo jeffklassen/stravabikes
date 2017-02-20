@@ -1,4 +1,4 @@
-import { getAthlete, rideAggregation } from '../clients/mongoclient';
+import { getAthlete, rideAggregation, listAthleteRides } from '../clients/mongoclient';
 
 //match bikeId in activities to bikeName in athlete profile
 const mapBikeIdToBike = (athlete, element) => {
@@ -25,6 +25,9 @@ const fieldMapping = {
 const athleteController = {
     getAthlete: () => {
         return getAthlete(3231940);
+    },
+    getActivities: () => {
+        return listAthleteRides(3231940);
     },
     //pull athlete profile, grab sum of relevant summary fields (time, elevation, distance) by bike from DB
     getSummary: () => {

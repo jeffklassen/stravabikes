@@ -43,10 +43,12 @@ const insertAthlete = (athlete) => {
     return insertObjectToCollection(athlete, 'athlete');
 };
 
-async function listAthleteActivities(athleteId) {
+async function listAthleteRides(athleteId) {
     let db = await getDB();
     let collection = await getCollection(db, 'activity');
-    let activities = await collection.find({ 'athlete.id': athleteId, type: 'Ride' })
+    let activities = await collection
+        .find({ 'athlete.id': athleteId, type: 'Ride' })
+        .sort({start_date_local: 1})
         .toArray();
 
     db.close();
@@ -79,7 +81,7 @@ async function rideAggregation(athleteId, field) {
 export {
     insertActivities,
     insertAthlete,
-    listAthleteActivities,
+    listAthleteRides,
     getAthlete,
     rideAggregation
 };

@@ -24,9 +24,9 @@ async function grabData() {
     console.log('done');
 }
 
-grabData();
+//grabData();
 
-//listAthleteActivities(3231940).then(console.log);
+listAthleteActivities(3231940).then(console.log);
 
 rideAggregation(3231940, 'distance')
     .then(res => res.map( m =>console.log(m._id,  m.total/1609.344))).catch(console.log);
