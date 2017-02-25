@@ -2,7 +2,7 @@ import React from 'react';
 import * as request from 'superagent';
 import { Chart } from 'react-google-charts';
 import AthleteSummary from './summary/AthleteSummary.jsx';
-import {extractMetricPreference, convertMetric, buildChart} from './summary/athleteDataManip';
+import {extractMetricPreference, convertMetric, buildRows, buildColumns} from './summary/athleteDataManip';
 
 class BikeInfoSurface extends React.Component {
     constructor(props) {
@@ -25,20 +25,12 @@ class BikeInfoSurface extends React.Component {
                 let metric = extractMetricPreference(athleteMetricPreference);
                 //activities = activities.filter(activity => activity.gear_id === firstBikeId);
 
-                console.log(activities.length);
                 //create date column for chart
-                let columns = [{
-                    label: 'Date',
-                    type: 'string'
-                }];
-                //create columns for each bike 
-                columns = columns.concat(bikes.map(bike => {
-                    return { type: 'number', label: bike.name };
-                }));
+                let columns = buildColumns(bikes);
+                
                 //iterate through ride activities, grab previous rows' data
-                let allBikeData = buildChart(activities, bikes);
+                let allBikeData = buildRows(activities, bikes);
 
-                console.log(allBikeData);
                 allBikeData = convertMetric(metric,allBikeData)
                 this.setState({ allBikeData, columns });
             });

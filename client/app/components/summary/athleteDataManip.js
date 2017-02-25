@@ -22,7 +22,7 @@ function convertMetric(metric, allBikeData) {
     return updatedBikeTable;
 }
 
-function buildChart(activities, bikes) {
+function buildRows(activities, bikes) {
     return activities.reduce((reducer, activity) => {
         let previousRow;
         if (reducer[reducer.length - 1]) {
@@ -52,4 +52,15 @@ function buildChart(activities, bikes) {
     }, []);
 }
 
-export { extractMetricPreference, convertMetric, buildChart };
+function buildColumns(bikes) {
+    let columns = [{
+        label: 'Date',
+        type: 'string'
+    }];
+    columns = columns.concat(bikes.map(bike => {
+        return { type: 'number', label: bike.name };
+    }));
+    return columns
+
+}
+export { extractMetricPreference, convertMetric, buildRows, buildColumns };
