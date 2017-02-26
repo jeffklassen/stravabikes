@@ -7,10 +7,12 @@ const authController = {
     getClientId: () => {
         return Promise.resolve(config.clientId);
     },
-    authenticate: () => {
 
+    //checks authentication
+    isAuthenticated: (sessionId) => {
+        return getSessionData(sessionId);
     },
-
+    // for initial account creation
     connectToStrava: (authCode) => {
 
         return getAuthToken(authCode)
@@ -24,18 +26,16 @@ const authController = {
                             accessToken: access_token
                         };
                     });
-                /*return Promise.all([
-                  let sessionId = uuid();
-                    insertAthlete(athlete),
-                    mapTokenToAthlete(athlete.id, access_token, sessionId)
 
-                ])
-                   ;*/
+            })
+            // create the session and return the session id
+            .then(({athleteId, accessToken}) => {
+                let sessionId = uuid();
+                return mapTokenToAthlete(athleteId, accessToken, sessionId)
+                    .then(() => sessionId);
             });
     },
-    getSessionData: (sessionId) => {
-        return getSessionData(sessionId);
-    }
+
 
 };
 

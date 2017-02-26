@@ -19,8 +19,9 @@ module.exports = app => {
 
         authController
             .connectToStrava(req.body.authCode)
-            .then(athleteId => {
-                
+            .then(sessionId => {
+                res.cookie('sessionId', sessionId);
+                res.send({ loggedIn: true });
             });
     });
 
@@ -35,7 +36,7 @@ module.exports = app => {
         }
         else {
             authController
-                .authenticate(req.cookies.sessionId)
+                .isAuthenticated(req.cookies.sessionId)
                 .then(sessionData => {
                     console.log('authentication success', sessionData);
                     req.sessionData = sessionData;
