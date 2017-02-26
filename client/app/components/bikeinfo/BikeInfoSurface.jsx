@@ -17,13 +17,13 @@ class BikeInfoSurface extends React.Component {
         Promise.all([request.get('/api/athleteSummary'), request.get('/api/activities')])
             .then(([summaryResponse, activityResponse]) => {
                 let athleteSummary = summaryResponse.body;
-                this.setState({ athlete: athleteSummary.athlete, summaries: athleteSummary.summary })
+                this.setState({ athlete: athleteSummary.athlete, summaries: athleteSummary.summary });
 
                 let activities = activityResponse.body;
                 let bikes = athleteSummary.athlete.bikes;
                 let athleteMetricPreference = athleteSummary.athlete.measurement_preference;
                 let metric = extractMetricPreference(athleteMetricPreference);
-                let yAxisString = generateYLabel(metric)
+                let yAxisString = generateYLabel(metric);
                 //activities = activities.filter(activity => activity.gear_id === firstBikeId);
 
                 //create date column for chart
@@ -48,16 +48,16 @@ class BikeInfoSurface extends React.Component {
                     <div className="row">
                         {this.state.allBikeData ? (
                             <Chart
-                                chartType="LineChart"
+                                chartType="AnnotatedTimeLine"
                                 columns={this.state.columns}
                                 rows={this.state.allBikeData}
                                 options={{
                                     title: 'Bike Mileage',
                                     vAxis: { title: this.state.yAxisString },
-                                    titleTextStyle: { bold: true },
+                                    titleTextStyle: { bold: true, fontSize: 20 },
                                     legend: { textStyle: { bold: true } },
-                                    titleTextStyle: { fontSize: 20 }, 
-                                    curveType: 'function'
+                                    curveType: 'function',
+                                    thickness: 3
                                 }}
                                 graph_id="ScatterChart"
                                 width="100%"
