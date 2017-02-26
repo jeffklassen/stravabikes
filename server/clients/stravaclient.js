@@ -2,7 +2,6 @@ import * as request from 'superagent';
 import config from '../config/config';
 
 const stravaAPIURL = 'https://www.strava.com/api/v3/';
-//const authId = '3db92dcc937476ff0a68ab3cc6c1c47f4bd988e6';
 async function getAuthToken(authCode) {
     return request.post('https://www.strava.com/oauth/token')
         .send({
@@ -45,6 +44,10 @@ async function fullStravaActivities(authId) {
         }
 
     }
+    stravaActivities = stravaActivities.map(activity => {
+        activity._id = activity.id;
+        return activity;
+    });
     return stravaActivities;
 
 }
