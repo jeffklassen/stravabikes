@@ -11,7 +11,7 @@ function generateYLabel(metric){
     if(metric == true){
         return 'Distance (km)';
     }else{
-        return 'Distance (m)';
+        return 'Distance (miles)';
     }
 }
 
