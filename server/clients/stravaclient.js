@@ -1,13 +1,23 @@
 import * as request from 'superagent';
+import config from '../config/config';
 
 const stravaAPIURL = 'https://www.strava.com/api/v3/';
-const authId = '3db92dcc937476ff0a68ab3cc6c1c47f4bd988e6';
-async function fullStravaActivities() {
+async function getAuthToken(authCode) {
+    return request.post('https://www.strava.com/oauth/token')
+        .send({
+            client_id: config.clientId,
+            client_secret: config.clientSecret,
+            code: authCode
+        })
+        .then(response => {
+            return response.body;
+        });
+}
 
+async function fullStravaActivities(authId) {
 
     const stravaActivityUrl = stravaAPIURL + 'activities';
     const headers = { Authorization: `Bearer ${authId}` };
-
 
     let params = { per_page: 200 };
     let stravaActivities = [];
@@ -34,11 +44,15 @@ async function fullStravaActivities() {
         }
 
     }
+    stravaActivities = stravaActivities.map(activity => {
+        activity._id = activity.id;
+        return activity;
+    });
     return stravaActivities;
 
 }
 
-async function getAthlete() {
+async function getAthlete(authId) {
     const stravaAthleteUrl = stravaAPIURL + 'athlete';
     const headers = { Authorization: `Bearer ${authId}` };
 
@@ -69,4 +83,4 @@ getAthlete()
     });
 */
 
-export { getAthlete, fullStravaActivities };
+export { getAthlete, fullStravaActivities, getAuthToken };
