@@ -24,10 +24,12 @@
     "express": "^4.14.0",
     "mongodb": "^2.2.22",
     "morgan": "^1.7.0",
+    "query-string": "^4.3.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-google-charts": "^1.4.2",
-    "superagent": "^3.4.1"
+    "superagent": "^3.4.1",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
