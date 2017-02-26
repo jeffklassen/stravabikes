@@ -1,18 +1,6 @@
 import { getAthlete, rideAggregation, listAthleteRides } from '../clients/mongoclient';
 
-//match bikeId in activities to bikeName in athlete profile
-const mapBikeIdToBike = (athlete, element, key) => {
-    let name;
-    let correctBike = athlete.bikes.reduce(b => {
-        return b.id == element[key];
-    });
-    if (correctBike.length == 1) {
-        name = correctBike[0].name;
-    }
 
-    element.bikeName = name;
-    return element;
-};
 
 //mapping database fields to front-end names
 const fieldMapping = {
@@ -23,11 +11,11 @@ const fieldMapping = {
 
 
 const athleteController = {
-    getAthlete: () => {
-        return getAthlete(3231940);
+    getAthlete: (athleteId) => {
+        return getAthlete(athleteId);
     },
-    getActivities: () => {
-        return listAthleteRides(3231940)
+    getActivities: (athleteId) => {
+        return listAthleteRides(athleteId)
             .then(activities => {
                 activities = activities.map(activity => {
 
@@ -38,12 +26,12 @@ const athleteController = {
             });
     },
     //pull athlete profile, grab sum of relevant summary fields (time, elevation, distance) by bike from DB
-    getSummary: () => {
+    getSummary: (athleteId) => {
         return Promise.all([
-            getAthlete(3231940),
-            rideAggregation(3231940, fieldMapping.distance.fieldName),
-            rideAggregation(3231940, fieldMapping.elevation.fieldName),
-            rideAggregation(3231940, fieldMapping.time.fieldName)
+            getAthlete(athleteId),
+            rideAggregation(athleteId, fieldMapping.distance.fieldName),
+            rideAggregation(athleteId, fieldMapping.elevation.fieldName),
+            rideAggregation(athleteId, fieldMapping.time.fieldName)
         ])
 
             .then(data => {
