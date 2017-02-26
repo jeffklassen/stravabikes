@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import momentPlugin from '../momentConversion';
+import momentPlugin from '../../momentConversion';
 
 
 
