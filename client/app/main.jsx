@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Header  from './Header.jsx';
-import BikeInfoSurface  from './BikeInfoSurface.jsx';
+import Header  from './components/Header.jsx';
+import AppSurface  from './components/AppSurface.jsx';
 
 const App = () => {
     return (
-        <div>
+        <div className="container">
             <Header vendorName="Strava"/>
-            <BikeInfoSurface />
+            <AppSurface />
         </div>
     );
 };

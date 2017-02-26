@@ -13,6 +13,7 @@ const config = {
             compress: { warnings: false },
             mangle: false,
             sourcemap: true,
+            beautify: true,
             dead_code: true,
             minimize: false,
             output: {
