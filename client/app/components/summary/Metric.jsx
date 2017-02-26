@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import 'moment-precise-range-plugin';
+import momentPlugin from '../momentConversion';
 
 
 
