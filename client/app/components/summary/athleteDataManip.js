@@ -61,6 +61,6 @@ function buildColumns(bikes) {
         return { type: 'number', label: bike.name };
     }));
     return columns
-
 }
+
 export { extractMetricPreference, convertMetric, buildRows, buildColumns };

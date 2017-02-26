@@ -18,7 +18,7 @@ const AthleteSummary = ({athlete, summaries}) => {
                     {summaries
                         .map(function (summary) {
                             return (
-                                <Metric key={summary.field} summary={summary} />
+                                <Metric key={summary.field} summary={summary} metricPreference={athlete.measurement_preference}/>
                             );
                         })
                     }

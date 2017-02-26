@@ -10,9 +10,9 @@ class BikeInfoSurface extends React.Component {
         this.state = { summary: {}, athlete: null };
 
         this.loadAthlete = this.loadAthlete.bind(this);
-        this.loadAthlete();
-        
+        this.loadAthlete();     
     }
+    
     loadAthlete() {
         Promise.all([request.get('/api/athleteSummary'), request.get('/api/activities')])
             .then(([summaryResponse, activityResponse]) => {
@@ -27,11 +27,11 @@ class BikeInfoSurface extends React.Component {
 
                 //create date column for chart
                 let columns = buildColumns(bikes);
-                
+
                 //iterate through ride activities, grab previous rows' data
                 let allBikeData = buildRows(activities, bikes);
 
-                allBikeData = convertMetric(metric,allBikeData)
+                allBikeData = convertMetric(metric,allBikeData);
                 this.setState({ allBikeData, columns });
             });
     }
