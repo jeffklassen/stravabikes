@@ -7,6 +7,14 @@ function extractMetricPreference(athleteMetricPreference) {
     }
 }
 
+function generateYLabel(metric){
+    if(metric == true){
+        return 'Distance (km)';
+    }else{
+        return 'Distance (m)';
+    }
+}
+
 function convertMetric(metric, allBikeData) {
     let updatedBikeTable = allBikeData.map(row => {
         let updatedRow = row.slice(1).map(record => {
@@ -63,4 +71,4 @@ function buildColumns(bikes) {
     return columns
 }
 
-export { extractMetricPreference, convertMetric, buildRows, buildColumns };
+export { extractMetricPreference, convertMetric, buildRows, buildColumns, generateYLabel };
