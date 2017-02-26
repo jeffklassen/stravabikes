@@ -28,8 +28,8 @@ module.exports = app => {
 
 
     apiRoutes.use((req, res, next) => {
-        let authToken = req.cookies.sessionId;
-        if (!authToken) {
+        let sessionId = req.cookies.sessionId;
+        if (!sessionId) {
             console.log('authentication failed');
             res.status(403);
             res.send('¡No debe pasar!');
@@ -50,6 +50,14 @@ module.exports = app => {
         }
     });
 
+
+    apiRoutes.get('/loadActivities', (req, res) => {
+        athleteController.loadActivities(req.sessionData.accessToken)
+            .then((activites) => {
+                res.send({activityCount: activites.length});
+            });
+
+    });
     apiRoutes.get('/athlete', (req, res) => {
         athleteController.getAthlete(req.sessionData.athleteId)
             .then(athlete => {

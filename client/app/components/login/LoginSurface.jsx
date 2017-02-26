@@ -20,12 +20,18 @@ class LoginSurface extends React.Component {
             .send({ authCode })
             .then(response => {
                 console.log(response.body);
-            });
+                this.setState({ msg: 'updating your data' });
+                return request.get('/api/loadActivities');
+            })
+            .then(resp => {
+                this.setState({ msg: `loaded ${resp.body.activityCount} activities` });
+            })
+            ;
     }
 
     render() {
         return (<div>
-            {this.state.authcode ? (<span>loading...</span>) :
+            {this.state.authcode ? (<span>{this.state.msg|| 'completing login with strava'}</span>) :
                 (<LoginLink />)}
         </div>);
     }

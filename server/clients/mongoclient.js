@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 const dbURL = 'mongodb://localhost:27017/strava';
-const collection = {
+const collectionNames = {
     athlete: 'athlete',
     activity: 'activity',
     session: 'session'
@@ -32,7 +32,7 @@ async function insertObjectToCollection(obj, collName) {
 
 async function insertActivities(activities) {
     let db = await getDB();
-    let collection = await getCollection(db, collection.activity);
+    let collection = await getCollection(db, collectionNames.activity);
     let batch = collection.initializeUnorderedBulkOp();
 
     for (let activity of activities) {
@@ -45,18 +45,18 @@ async function insertActivities(activities) {
 
 }
 const insertAthlete = (athlete) => {
-    return insertObjectToCollection(athlete, collection.athlete);
+    return insertObjectToCollection(athlete, collectionNames.athlete);
 };
 async function mapTokenToAthlete(athleteId, accessToken, sessionId) {
     let mapping = { athleteId, accessToken, sessionId };
     mapping._id = athleteId;
-    return insertObjectToCollection(mapping, collection.session);
+    return insertObjectToCollection(mapping, collectionNames.session);
 }
 
 async function listAthleteRides(athleteId) {
     let db = await getDB();
 
-    let collection = await getCollection(db, collection.activity);
+    let collection = await getCollection(db, collectionNames.activity);
     let activities = await collection
         .find({ 'athlete.id': athleteId, type: 'Ride' })
         .sort({ start_date_local: 1 })
@@ -69,7 +69,7 @@ async function listAthleteRides(athleteId) {
 async function getSessionData(sessionId) {
     let db = await getDB();
 
-    let collection = await getCollection(db, collection.session);
+    let collection = await getCollection(db, collectionNames.session);
 
     let sessionData = await collection.findOne({ 'sessionId': { '$eq': sessionId } });
     
@@ -80,7 +80,7 @@ async function getSessionData(sessionId) {
 async function getAthlete(athleteId) {
     let db = await getDB();
 
-    let collection = await getCollection(db, collection.athlete);
+    let collection = await getCollection(db, collectionNames.athlete);
 
     let athlete = await collection.findOne({ '_id': { '$eq': athleteId } });
 
@@ -91,7 +91,7 @@ async function getAthlete(athleteId) {
 async function rideAggregation(athleteId, field) {
     let db = await getDB();
 
-    let collection = await getCollection(db, collection.activity);
+    let collection = await getCollection(db, collectionNames.activity);
 
     let prom = await collection.aggregate([
         { $match: { 'athlete.id': athleteId, type: 'Ride' } },

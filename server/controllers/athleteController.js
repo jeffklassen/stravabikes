@@ -1,4 +1,5 @@
-import { getAthlete, rideAggregation, listAthleteRides } from '../clients/mongoclient';
+import { getAthlete, rideAggregation, listAthleteRides, insertActivities } from '../clients/mongoclient';
+import {fullStravaActivities} from '../clients/stravaclient';
 
 
 
@@ -11,6 +12,12 @@ const fieldMapping = {
 
 
 const athleteController = {
+    loadActivities: (authId) => {
+        return fullStravaActivities(authId)
+            .then(activities => {
+                return insertActivities(activities);
+            });
+    },
     getAthlete: (athleteId) => {
         return getAthlete(athleteId);
     },
@@ -33,7 +40,6 @@ const athleteController = {
             rideAggregation(athleteId, fieldMapping.elevation.fieldName),
             rideAggregation(athleteId, fieldMapping.time.fieldName)
         ])
-
             .then(data => {
                 let athlete = data[0];
 
