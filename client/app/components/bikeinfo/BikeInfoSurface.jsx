@@ -57,7 +57,8 @@ class BikeInfoSurface extends React.Component {
                                     titleTextStyle: { bold: true, fontSize: 20 },
                                     legend: { textStyle: { bold: true } },
                                     curveType: 'function',
-                                    thickness: 3
+                                    thickness: 3,
+                                    displayZoomButtons: false
                                 }}
                                 graph_id="ScatterChart"
                                 width="100%"
