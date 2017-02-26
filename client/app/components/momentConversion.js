@@ -114,7 +114,7 @@ const momentPlugin = (function(moment) {
                 "firstDateWasLater" : firstDateWasLater
             };
         } else {
-            return buildStringFromValues(yDiff, mDiff, dDiff, hourDiff, minDiff, secDiff);
+            return buildStringFromValues(yDiff, mDiff, dDiff, hourDiff, minDiff);
         }
 
 

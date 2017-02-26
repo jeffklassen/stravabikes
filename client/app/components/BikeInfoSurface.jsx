@@ -56,7 +56,8 @@ class BikeInfoSurface extends React.Component {
                                     vAxis: { title: this.state.yAxisString },
                                     titleTextStyle: { bold: true },
                                     legend: { textStyle: { bold: true } },
-                                    titleTextStyle: { fontSize: 20 }
+                                    titleTextStyle: { fontSize: 20 }, 
+                                    curveType: 'function'
                                 }}
                                 graph_id="ScatterChart"
                                 width="100%"

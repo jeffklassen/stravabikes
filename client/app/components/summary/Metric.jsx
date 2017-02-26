@@ -32,7 +32,7 @@ function conversionPasser(summary, metricPreference) {
 function timeConverter(timeInMilSeconds) {
     let timeInSeconds = timeInMilSeconds * 1000
     let timeSec = moment.preciseDiff(0, timeInSeconds)
-    return { 'label': 'time spent', 'value': timeSec };
+    return { 'label': 'time adventuring', 'value': timeSec };
 }
 
 //convert distance in meters to either miles/km based on user preference. then adds commas
