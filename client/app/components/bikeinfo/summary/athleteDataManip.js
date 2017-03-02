@@ -55,7 +55,7 @@ function buildRows(activities, bikes) {
             else { return previousValue; }
         });
         //add new row to reducer list
-        reducer.push([activity.start_date_local, ...data]);
+        reducer.push([new Date(activity.start_date_local), ...data]);
         return reducer;
     }, []);
 }
@@ -63,12 +63,12 @@ function buildRows(activities, bikes) {
 function buildColumns(bikes) {
     let columns = [{
         label: 'Date',
-        type: 'string'
+        type: 'date'
     }];
     columns = columns.concat(bikes.map(bike => {
         return { type: 'number', label: bike.name };
     }));
-    return columns
+    return columns;
 }
 
 export { extractMetricPreference, convertMetric, buildRows, buildColumns, generateYLabel };

@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import momentPlugin from '../momentConversion';
+import momentPlugin from '../../momentConversion';
 
 
 
@@ -22,7 +22,7 @@ function conversionPasser(summary, metricPreference) {
     if (summary.field === 'Time') {
         return timeConverter(summary.total);
     } else if (summary.field === 'Elevation') {
-        return elevationConverter(summary.total, metricPreference)
+        return elevationConverter(summary.total, metricPreference);
     } else if (summary.field === 'Distance') {
         return distanceConverter(summary.total, metricPreference);
     }
@@ -30,8 +30,8 @@ function conversionPasser(summary, metricPreference) {
 
 //convert time in seconds to human readable time
 function timeConverter(timeInMilSeconds) {
-    let timeInSeconds = timeInMilSeconds * 1000
-    let timeSec = moment.preciseDiff(0, timeInSeconds)
+    let timeInSeconds = timeInMilSeconds * 1000;
+    let timeSec = moment.preciseDiff(0, timeInSeconds);
     return { 'label': 'time adventuring', 'value': timeSec };
 }
 
@@ -50,16 +50,16 @@ function distanceConverter(distanceInMeters, metricPreference) {
 function elevationConverter(elevationinMeters, metricPreference) {
     if (metricPreference === 'feet') {
         let totalClimbed = addCommas(Math.round(elevationinMeters * 3.28084));
-        return { 'label': 'feet climbed', 'value': totalClimbed }
+        return { 'label': 'feet climbed', 'value': totalClimbed };
     } else {
         let totalClimbed = addCommas(Math.round(elevationinMeters));
-        return { 'label': 'meters climbed', 'value': totalClimbed }
+        return { 'label': 'meters climbed', 'value': totalClimbed };
     }
 }
 
 //adds commas to numbers for readability
 function addCommas(intNum) {
-  return (intNum + '').replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    return (intNum + '').replace(/(\d)(?=(\d{3})+$)/g, '$1,');
 }
 
 export default Metric;

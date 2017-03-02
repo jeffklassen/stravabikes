@@ -1,5 +1,5 @@
 import React from 'react';
-import BikeInfoSurface from './BikeInfoSurface.jsx';
+import BikeInfoSurface from './bikeinfo/BikeInfoSurface.jsx';
 import LoginSurface from './login/LoginSurface.jsx';
 import * as request from 'superagent';
 
