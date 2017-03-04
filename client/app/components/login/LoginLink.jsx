@@ -13,7 +13,7 @@ class LoginLink extends React.Component {
             .then(clientIdResponse => {
                 let clientId = clientIdResponse.body.clientId    ;
                 this.setState({
-                    url: `https://www.strava.com/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=http://127.0.0.1:3000/client/&approval_prompt=force`
+                    url: `https://www.strava.com/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=http://127.0.0.1:3000/client/&approval_prompt=auto`
                 });
             });
 
