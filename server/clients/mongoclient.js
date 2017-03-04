@@ -30,6 +30,33 @@ async function insertObjectToCollection(obj, collName) {
     return obj;
 }
 
+async function getSessionData(sessionId) {
+    let db = await getDB();
+
+    let collection = await getCollection(db, collectionNames.session);
+
+    let sessionData = await collection.findOne({ 'sessionId': { '$eq': sessionId } });
+
+    db.close();
+    return sessionData;
+}
+async function mapTokenToAthlete(athleteId, accessToken, sessionId) {
+    let mapping = { athleteId, accessToken, sessionId };
+    mapping._id = athleteId;
+    return insertObjectToCollection(mapping, collectionNames.session);
+}
+
+async function getAthlete(athleteId) {
+    let db = await getDB();
+
+    let collection = await getCollection(db, collectionNames.athlete);
+
+    let athlete = await collection.findOne({ '_id': { '$eq': athleteId } });
+
+    db.close();
+    return athlete;
+}
+
 async function insertActivities(activities) {
     let db = await getDB();
     let collection = await getCollection(db, collectionNames.activity);
@@ -44,49 +71,33 @@ async function insertActivities(activities) {
     return activities;
 
 }
-const insertAthlete = (athlete) => {
-    return insertObjectToCollection(athlete, collectionNames.athlete);
-};
-async function mapTokenToAthlete(athleteId, accessToken, sessionId) {
-    let mapping = { athleteId, accessToken, sessionId };
-    mapping._id = athleteId;
-    return insertObjectToCollection(mapping, collectionNames.session);
-}
-
 async function listAthleteRides(athleteId) {
     let db = await getDB();
 
     let collection = await getCollection(db, collectionNames.activity);
     let activities = await collection
-        .find({ 'athlete.id': athleteId, type: 'Ride' })
+        .find(
+        {
+            'athlete.id': athleteId,
+            type: 'Ride'
+        },
+        {
+            start_date_local: 1,
+            moving_time: 1,
+            total_elevation_gain: 1,
+            distance: 1,
+            gear_id: 1,
+            gear: 1
+        })
         .sort({ start_date_local: 1 })
         .toArray();
 
     db.close();
     return activities;
 }
-
-async function getSessionData(sessionId) {
-    let db = await getDB();
-
-    let collection = await getCollection(db, collectionNames.session);
-
-    let sessionData = await collection.findOne({ 'sessionId': { '$eq': sessionId } });
-    
-    db.close();
-    return sessionData;
-}
-
-async function getAthlete(athleteId) {
-    let db = await getDB();
-
-    let collection = await getCollection(db, collectionNames.athlete);
-
-    let athlete = await collection.findOne({ '_id': { '$eq': athleteId } });
-
-    db.close();
-    return athlete;
-}
+const insertAthlete = (athlete) => {
+    return insertObjectToCollection(athlete, collectionNames.athlete);
+};
 
 async function rideAggregation(athleteId, field) {
     let db = await getDB();
