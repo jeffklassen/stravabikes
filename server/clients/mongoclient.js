@@ -76,7 +76,19 @@ async function listAthleteRides(athleteId) {
 
     let collection = await getCollection(db, collectionNames.activity);
     let activities = await collection
-        .find({ 'athlete.id': athleteId, type: 'Ride' })
+        .find(
+        {
+            'athlete.id': athleteId,
+            type: 'Ride'
+        },
+        {
+            start_date_local: 1,
+            moving_time: 1,
+            total_elevation_gain: 1,
+            distance: 1,
+            gear_id: 1,
+            gear: 1
+        })
         .sort({ start_date_local: 1 })
         .toArray();
 
