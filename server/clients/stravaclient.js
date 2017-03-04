@@ -10,6 +10,7 @@ async function getAuthToken(authCode) {
             code: authCode
         })
         .then(response => {
+            console.log(response)
             return response.body;
         });
 }
