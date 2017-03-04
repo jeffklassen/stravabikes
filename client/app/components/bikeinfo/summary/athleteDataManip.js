@@ -30,7 +30,11 @@ function convertMetric(metric, allBikeData) {
     return updatedBikeTable;
 }
 
-function buildRows(activities, bikes) {
+function buildRows(activities, bikes, rowBuilder) {
+    //console.log(typeof rowBuilder);
+    if (!rowBuilder && typeof rowBuilder !== 'function') {
+        throw 'rowBuilder must be a function'; 
+    }
     return activities.reduce((reducer, activity) => {
         let previousRow;
         if (reducer[reducer.length - 1]) {
@@ -50,7 +54,8 @@ function buildRows(activities, bikes) {
 
             //only update the correct bike sum if indexes match
             if (index === activityIndex) {
-                return activity.distance + previousValue;
+                return rowBuilder(activity, previousValue);
+                //return activity.distance + previousValue;
             }
             else { return previousValue; }
         });

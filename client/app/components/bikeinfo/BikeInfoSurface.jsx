@@ -3,6 +3,54 @@ import * as request from 'superagent';
 import { Chart } from 'react-google-charts';
 import AthleteSummary from './summary/AthleteSummary.jsx';
 import { extractMetricPreference, convertMetric, buildRows, buildColumns, generateYLabel } from './summary/athleteDataManip';
+import chartBuilder from './chartBuilder';
+
+class ChartSurface extends React.Component {
+    constructor(props) {
+        super(props);
+
+        let yAxisString = generateYLabel(props.metric);
+        //activities = activities.filter(activity => activity.gear_id === firstBikeId);
+
+        //create date column for chart
+        let columns = buildColumns(props.bikes);
+
+        //iterate through ride activities, grab previous rows' data
+        let allBikeData = buildRows(props.activities, props.bikes, chartBuilder.distance.rowBuilder);
+
+        console.log(chartBuilder);        
+        allBikeData = convertMetric(props.metric, allBikeData);
+        this.state = { allBikeData, columns, yAxisString };
+
+
+    }
+    render() {
+        return (
+            <div>
+
+                <h2>Bike Mileage</h2>
+                <Chart
+                    chartType="AnnotatedTimeLine"
+                    columns={this.state.columns}
+                    rows={this.state.allBikeData}
+                    options={{
+                        title: 'Bike Mileage',
+                        vAxis: { title: this.state.yAxisString },
+                        titleTextStyle: { bold: true, fontSize: 20 },
+                        legend: { textStyle: { bold: true } },
+                        curveType: 'function',
+                        thickness: 3,
+                        displayZoomButtons: false
+                    }}
+                    graph_id="ScatterChart"
+                    width="100%"
+                    height="400px"
+                    legend_toggle
+                />
+            </div>
+        );
+    }
+}
 
 class BikeInfoSurface extends React.Component {
     constructor(props) {
@@ -17,23 +65,17 @@ class BikeInfoSurface extends React.Component {
         Promise.all([request.get('/api/athleteSummary'), request.get('/api/activities')])
             .then(([summaryResponse, activityResponse]) => {
                 let athleteSummary = summaryResponse.body;
-                this.setState({ athlete: athleteSummary.athlete, summaries: athleteSummary.summary });
 
-                let activities = activityResponse.body;
-                let bikes = athleteSummary.athlete.bikes;
                 let athleteMetricPreference = athleteSummary.athlete.measurement_preference;
                 let metric = extractMetricPreference(athleteMetricPreference);
-                let yAxisString = generateYLabel(metric);
-                //activities = activities.filter(activity => activity.gear_id === firstBikeId);
+                this.setState({
+                    athlete: athleteSummary.athlete,
+                    summaries: athleteSummary.summary,
+                    activities: activityResponse.body,
+                    metric
+                });
 
-                //create date column for chart
-                let columns = buildColumns(bikes);
 
-                //iterate through ride activities, grab previous rows' data
-                let allBikeData = buildRows(activities, bikes);
-
-                allBikeData = convertMetric(metric, allBikeData);
-                this.setState({ allBikeData, columns, yAxisString });
             });
     }
 
@@ -46,25 +88,8 @@ class BikeInfoSurface extends React.Component {
                         <AthleteSummary athlete={this.state.athlete} summaries={this.state.summaries} />
                     </div>
                     <div className="row">
-                        {this.state.allBikeData ? (
-                            <Chart
-                                chartType="AnnotatedTimeLine"
-                                columns={this.state.columns}
-                                rows={this.state.allBikeData}
-                                options={{
-                                    title: 'Bike Mileage',
-                                    vAxis: { title: this.state.yAxisString },
-                                    titleTextStyle: { bold: true, fontSize: 20 },
-                                    legend: { textStyle: { bold: true } },
-                                    curveType: 'function',
-                                    thickness: 3,
-                                    displayZoomButtons: false
-                                }}
-                                graph_id="ScatterChart"
-                                width="100%"
-                                height="400px"
-                                legend_toggle
-                            />
+                        {this.state.activities ? (
+                            <ChartSurface activities={this.state.activities} bikes={this.state.athlete.bikes} metric={this.state.metric} />
                         ) : null}
                     </div>
 
