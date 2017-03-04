@@ -9,10 +9,10 @@ let apiRoutes = express.Router();
 
 module.exports = app => {
 
-    apiRoutes.get('/clientId', (req, res) => {
-        authController.getClientId()
-            .then(clientId => {
-                res.send({ clientId });
+    apiRoutes.get('/authDetails', (req, res) => {
+        authController.getAuthDetails()
+            .then(authDetails => {
+                res.send(authDetails);
             });
     });
     apiRoutes.post('/connectToStrava', (req, res) => {

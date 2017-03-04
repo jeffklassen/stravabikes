@@ -4,8 +4,8 @@ import { mapTokenToAthlete, insertAthlete, getSessionData } from '../clients/mon
 import uuid from 'uuid/v4';
 
 const authController = {
-    getClientId: () => {
-        return Promise.resolve(config.clientId);
+    getAuthDetails: () => {
+        return Promise.resolve(config.authProvider);
     },
 
     //checks authentication
@@ -16,7 +16,7 @@ const authController = {
     connectToStrava: (authCode) => {
 
         return getAuthToken(authCode)
-            .then(({access_token, athlete}) => {
+            .then(({ access_token, athlete }) => {
                 athlete._id = athlete.id;
 
                 return insertAthlete(athlete)
@@ -29,7 +29,7 @@ const authController = {
 
             })
             // create the session and return the session id
-            .then(({athleteId, accessToken}) => {
+            .then(({ athleteId, accessToken }) => {
                 let sessionId = uuid();
                 return mapTokenToAthlete(athleteId, accessToken, sessionId)
                     .then(() => sessionId);
