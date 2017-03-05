@@ -1,4 +1,4 @@
-function convertKM(prefersMetric, unconvertedValue) {
+function convertDistance(prefersMetric, unconvertedValue) {
     if (prefersMetric) {
         return unconvertedValue * .001;
     } else {
@@ -6,18 +6,21 @@ function convertKM(prefersMetric, unconvertedValue) {
     }
 }
 
-function convertMeters(prefersMetric, unconvertedValue){
-
-
+function convertElevation(prefersMetric, unconvertedValue) {
+    if (prefersMetric) {
+        return unconvertedValue;
+    } else {
+        return unconvertedValue * 3.28084;
+    }
 }
 
-function convertTime(prefersMetric, unconvertedValue){
-
+function convertTime(prefersMetric, unconvertedValue) {
+    return unconvertedValue * .000000277778;
 }
 
 export {
-    convertKM, 
-    convertMeters,
+    convertDistance,
+    convertElevation,
     convertTime
 };
 
