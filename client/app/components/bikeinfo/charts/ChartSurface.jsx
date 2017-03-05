@@ -1,7 +1,7 @@
 import React from 'react';
 import { Chart } from 'react-google-charts';
 import { buildRows, buildColumns, generateYLabel } from '../summary/athleteDataManip';
-import { convertMetric } from './converters';
+
 import chartBuilder from './chartBuilder';
 
 class ChartSurface extends React.Component {
@@ -15,7 +15,7 @@ class ChartSurface extends React.Component {
         let columns = buildColumns(props.bikes);
 
         //iterate through ride activities, grab previous rows' data
-        let allBikeData = buildRows(props.activities, props.bikes, chartBuilder.distance.rowBuilder, convertMetric.bind(null, props.prefersMetric));
+        let allBikeData = buildRows(props.activities, props.bikes, chartBuilder.distance.rowBuilder(props.prefersMetric) );
         
         //allBikeData = convertMetric(props.metric, allBikeData);
         this.state = { allBikeData, columns, yAxisString };

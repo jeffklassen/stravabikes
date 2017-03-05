@@ -24,7 +24,7 @@ function convertMetric(metric, unconvertedValue) {
     }
 }
 
-function buildRows(activities, bikes, rowBuilder, converter) {
+function buildRows(activities, bikes, rowBuilder) {
     //console.log(typeof rowBuilder);
     if (!rowBuilder && typeof rowBuilder !== 'function') {
         throw 'rowBuilder must be a function';
@@ -48,7 +48,7 @@ function buildRows(activities, bikes, rowBuilder, converter) {
 
             //only update the correct bike sum if indexes match
             if (index === activityIndex) {
-                return rowBuilder(activity, previousValue, converter);
+                return rowBuilder(activity, previousValue);
             }
             else {
                 return previousValue;
