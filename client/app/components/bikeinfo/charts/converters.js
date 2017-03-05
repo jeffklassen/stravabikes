@@ -1,6 +1,4 @@
-function convertMetric(prefersMetric, unconvertedValue) {
-   
-    console.log(prefersMetric, unconvertedValue)
+function convertKM(prefersMetric, unconvertedValue) {
     if (prefersMetric) {
         return unconvertedValue * .001;
     } else {
@@ -8,8 +6,19 @@ function convertMetric(prefersMetric, unconvertedValue) {
     }
 }
 
+function convertMeters(prefersMetric, unconvertedValue){
+    
+
+}
+
+function convertTime(){
+
+}
+
 export {
-    convertMetric
+    convertKM, 
+    convertMeters,
+    convertTime
 };
 
 
