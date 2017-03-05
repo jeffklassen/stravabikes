@@ -1,6 +1,6 @@
 import { convertDistance, convertElevation, convertTime } from './converters';
-const chartBuilder = {
-    distance: {
+const chartBuilders = [
+    {
         id: 'distance',
         label: 'Bike Mileage',
         rowBuilder: function (preference) {
@@ -10,7 +10,7 @@ const chartBuilder = {
             };
         }
     },
-    elevation: {
+    {
         id: 'elevation',
         label: 'Elevation',
         rowBuilder: function (preference) {
@@ -20,7 +20,7 @@ const chartBuilder = {
             };
         }
     },
-    time: {
+    {
         id: 'time',
         label: 'Time',
         rowBuilder: function (preference) {
@@ -29,8 +29,8 @@ const chartBuilder = {
             };
         }
     },
-    total: {
-        id: 'total',
+    {
+        id: 'count',
         label: 'Count',
         rowBuilder: function () {
 
@@ -39,6 +39,6 @@ const chartBuilder = {
             };
         }
     }
-};
+];
 
-export default chartBuilder;
+export default chartBuilders;
