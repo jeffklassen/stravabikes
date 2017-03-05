@@ -7,11 +7,11 @@ function convertKM(prefersMetric, unconvertedValue) {
 }
 
 function convertMeters(prefersMetric, unconvertedValue){
-    
+
 
 }
 
-function convertTime(){
+function convertTime(prefersMetric, unconvertedValue){
 
 }
 
