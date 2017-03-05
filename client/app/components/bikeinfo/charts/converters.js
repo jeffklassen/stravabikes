@@ -15,7 +15,7 @@ function convertElevation(prefersMetric, unconvertedValue) {
 }
 
 function convertTime(prefersMetric, unconvertedValue) {
-    return unconvertedValue * .000000277778;
+    return unconvertedValue / 60 / 60;
 }
 
 export {
