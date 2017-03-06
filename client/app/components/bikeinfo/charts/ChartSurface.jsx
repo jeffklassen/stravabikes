@@ -52,7 +52,7 @@ class ChartSurface extends React.Component {
                     chartBuilders={chartBuilders}
                     currChart={this.state.chart}
                 />
-                <h2 style={{cursor:"pointer"}}>{this.state.chart.label}</h2>
+                <h2 style={{cursor:"pointer"}}>{this.state.chart.label}</h2><i class="fa fa-info-circle" aria-hidden="true"></i>
                 <Chart
                     chartType="AnnotatedTimeLine"
                     columns={this.state.columns}
