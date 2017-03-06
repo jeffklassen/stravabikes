@@ -1,8 +1,6 @@
 import { getAthlete, rideAggregation, listAthleteRides, insertActivities } from '../clients/mongoclient';
 import {fullStravaActivities} from '../clients/stravaclient';
 
-
-
 //mapping database fields to front-end names
 const fieldMapping = {
     distance: { display: 'Distance', fieldName: 'distance' },
@@ -22,15 +20,7 @@ const athleteController = {
         return getAthlete(athleteId);
     },
     getActivities: (athleteId) => {
-        return listAthleteRides(athleteId)
-            .then(activities => {
-                activities = activities.map(activity => {
-
-
-                    return activity;
-                });
-                return activities;
-            });
+        return listAthleteRides(athleteId);
     },
     //pull athlete profile, grab sum of relevant summary fields (time, elevation, distance) by bike from DB
     getSummary: (athleteId) => {

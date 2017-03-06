@@ -4,7 +4,7 @@ import * as request from 'superagent';
 import AthleteSummary from './summary/AthleteSummary.jsx';
 import ChartSurface from './charts/ChartSurface.jsx';
 import { extractMetricPreference } from './summary/athleteDataManip';
-
+import Link from '../Link.jsx';
 
 class BikeInfoSurface extends React.Component {
     constructor(props) {
@@ -12,9 +12,21 @@ class BikeInfoSurface extends React.Component {
         this.state = { summary: {}, athlete: null };
 
         this.loadAthlete = this.loadAthlete.bind(this);
+        this.refreshActivites = this.refreshActivites.bind(this);
         this.loadAthlete();
     }
-
+    refreshActivites() {
+        this.setState({ activities: null });
+        request.get('/api/loadActivities')
+            .then(() => {
+                return request.get('/api/activities');
+            })
+            .then(resp => {
+                this.setState({
+                    activities: resp.body
+                });
+            });
+    }
     loadAthlete() {
         Promise.all([request.get('/api/athleteSummary'), request.get('/api/activities')])
             .then(([summaryResponse, activityResponse]) => {
@@ -44,14 +56,20 @@ class BikeInfoSurface extends React.Component {
                             summaries={this.state.summaries}
                         />
                     </div>
+
                     <div className="row">
                         {this.state.activities ? (
-                            <ChartSurface   
-                                activities={this.state.activities}
-                                bikes={this.state.athlete.bikes}
-                                prefersMetric={this.state.prefersMetric}
-                            />
-                        ) : null}
+                            <div>
+                                <Link onClick={this.refreshActivites}>Refresh Strava Data </Link>
+                                <br />
+                                <br />
+                                <ChartSurface
+                                    activities={this.state.activities}
+                                    bikes={this.state.athlete.bikes}
+                                    prefersMetric={this.state.prefersMetric}
+                                />
+                            </div>
+                        ) : <span>Loading... </span>}
                     </div>
 
                 </div>
