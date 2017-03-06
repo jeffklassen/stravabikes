@@ -60,14 +60,16 @@ class BikeInfoSurface extends React.Component {
                     <div className="row">
                         {this.state.activities ? (
                             <div>
-                                <Link onClick={this.refreshActivites}>Update from Strava </Link>
+                                <Link onClick={this.refreshActivites}>Refresh Strava Data </Link>
+                                <br />
+                                <br />
                                 <ChartSurface
                                     activities={this.state.activities}
                                     bikes={this.state.athlete.bikes}
                                     prefersMetric={this.state.prefersMetric}
                                 />
                             </div>
-                        ) : null}
+                        ) : <span>Loading... </span>}
                     </div>
 
                 </div>
