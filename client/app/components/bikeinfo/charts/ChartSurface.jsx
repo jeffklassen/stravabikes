@@ -1,24 +1,11 @@
 import React from 'react';
 import { Chart } from 'react-google-charts';
 import { buildRows, buildColumns, generateYLabel } from '../summary/athleteDataManip';
+import ChartChooser from './ChartChooser.jsx';
 
 import chartBuilders from './chartBuilders';
 
-const ChartChooser = ({ onChange, chartBuilders, currChart }) => {
-    const handleChange = (e) => {
-        onChange(e.target.value);
-    };
-    return (
-        <select className="form-control" value={currChart.id} onChange={handleChange.bind(null)}>
-            {
-                chartBuilders.map(o => {
-                    return <option key={o.id} value={o.id}>{o.label}</option>;
-                })
-            }
 
-        </select>
-    );
-}
 
 class ChartSurface extends React.Component {
     constructor(props) {
@@ -52,7 +39,8 @@ class ChartSurface extends React.Component {
                     chartBuilders={chartBuilders}
                     currChart={this.state.chart}
                 />
-                <h2 style={{cursor:"pointer"}}>{this.state.chart.label}</h2><i class="fa fa-info-circle" aria-hidden="true"></i>
+
+                <h2 style={{cursor:'pointer'}}>{this.state.chart.label}</h2>
                 <Chart
                     chartType="AnnotatedTimeLine"
                     columns={this.state.columns}
