@@ -7,30 +7,28 @@ function extractMetricPreference(athleteMetricPreference) {
     }
 }
 
-function generateYLabel(metric){
-    if(metric == true){
+function generateYLabel(metric) {
+    if (metric == true) {
         return 'Distance (km)';
-    }else{
+    } else {
         return 'Distance (miles)';
     }
 }
 
-function convertMetric(metric, allBikeData) {
-    let updatedBikeTable = allBikeData.map(row => {
-        let updatedRow = row.slice(1).map(record => {
-            if (metric) {
-                record = record * .001;
-            } else {
-                record = record * .000621371;
-            }
-            return record;
-        });
-        return [row[0], ...updatedRow];
-    });
-    return updatedBikeTable;
+function convertMetric(metric, unconvertedValue) {
+
+    if (metric) {
+        return unconvertedValue * .001;
+    } else {
+        return unconvertedValue * .000621371;
+    }
 }
 
-function buildRows(activities, bikes) {
+function buildRows(activities, bikes, rowBuilder) {
+    //console.log(typeof rowBuilder);
+    if (!rowBuilder && typeof rowBuilder !== 'function') {
+        throw 'rowBuilder must be a function';
+    }
     return activities.reduce((reducer, activity) => {
         let previousRow;
         if (reducer[reducer.length - 1]) {
@@ -50,9 +48,11 @@ function buildRows(activities, bikes) {
 
             //only update the correct bike sum if indexes match
             if (index === activityIndex) {
-                return activity.distance + previousValue;
+                return rowBuilder(activity, previousValue);
             }
-            else { return previousValue; }
+            else {
+                return previousValue;
+            }
         });
         //add new row to reducer list
         reducer.push([new Date(activity.start_date_local), ...data]);
