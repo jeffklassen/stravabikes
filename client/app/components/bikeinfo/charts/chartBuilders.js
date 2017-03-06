@@ -2,7 +2,7 @@ import { convertDistance, convertElevation, convertTime } from './converters';
 const chartBuilders = [
     {
         id: 'distance',
-        label: 'Bike Mileage',
+        label: 'Miles Ridden',
         rowBuilder: function (preference) {
             return function (activity, previousValue) {
 
@@ -12,7 +12,7 @@ const chartBuilders = [
     },
     {
         id: 'elevation',
-        label: 'Elevation',
+        label: 'Elevation Gain',
         rowBuilder: function (preference) {
             return function (activity, previousValue) {
 
@@ -22,7 +22,7 @@ const chartBuilders = [
     },
     {
         id: 'time',
-        label: 'Time',
+        label: 'Time Riding',
         rowBuilder: function (preference) {
             return function (activity, previousValue) {
                 return convertTime(preference, activity.moving_time) + previousValue;
@@ -31,7 +31,7 @@ const chartBuilders = [
     },
     {
         id: 'count',
-        label: 'Count',
+        label: 'Ride Count',
         rowBuilder: function () {
 
             return function (activity, previousValue) {

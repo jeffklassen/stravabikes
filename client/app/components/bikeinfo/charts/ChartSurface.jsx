@@ -20,7 +20,6 @@ const ChartChooser = ({ onChange, chartBuilders, currChart }) => {
     );
 }
 
-
 class ChartSurface extends React.Component {
     constructor(props) {
         super(props);
