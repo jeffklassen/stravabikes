@@ -19,7 +19,7 @@ class ChartSurface extends React.Component {
 
 
         //allBikeData = convertMetric(props.metric, allBikeData);
-        this.state = {chart: chartBuilders[0], columns, yAxisString };
+        this.state = { chart: chartBuilders[0], columns, yAxisString };
 
 
     }
@@ -34,30 +34,40 @@ class ChartSurface extends React.Component {
 
         return (
             <div>
-                <ChartChooser
-                    onChange={this.onChange.bind(this)}
-                    chartBuilders={chartBuilders}
-                    currChart={this.state.chart}
-                />
-
-                <h2 style={{cursor:'pointer'}}>{this.state.chart.label}</h2>
-                <Chart
-                    chartType="AnnotatedTimeLine"
-                    columns={this.state.columns}
-                    rows={allBikeData}
-                    options={{
-                        vAxis: { title: this.state.yAxisString },
-                        titleTextStyle: { bold: true, fontSize: 20 },
-                        legend: { textStyle: { bold: true } },
-                        curveType: 'function',
-                        thickness: 3,
-                        displayZoomButtons: false
-                    }}
-                    graph_id="ScatterChart"
-                    width="100%"
-                    height="400px"
-                    legend_toggle
-                />
+                <div className="row">
+                    <div className="col-md-2">
+                        <h2 >{this.state.chart.label}</h2>
+                    </div>
+                    <div className="pull-right">
+                        <ChartChooser
+                            onChange={this.onChange.bind(this)}
+                            chartBuilders={chartBuilders}
+                            currChart={this.state.chart}
+                        />
+                        <div className="pull-right">
+                            {this.props.children}
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <Chart
+                        chartType="AnnotatedTimeLine"
+                        columns={this.state.columns}
+                        rows={allBikeData}
+                        options={{
+                            vAxis: { title: this.state.yAxisString },
+                            titleTextStyle: { bold: true, fontSize: 20 },
+                            legend: { textStyle: { bold: true } },
+                            curveType: 'function',
+                            thickness: 3,
+                            displayZoomButtons: false
+                        }}
+                        graph_id="ScatterChart"
+                        width="100%"
+                        height="400px"
+                        legend_toggle
+                    />
+                </div>
             </div>
         );
     }
