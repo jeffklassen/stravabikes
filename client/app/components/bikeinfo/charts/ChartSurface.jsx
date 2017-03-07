@@ -35,7 +35,7 @@ class ChartSurface extends React.Component {
         return (
             <div>
                 <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                         <h2 >{this.state.chart.label} <small>{this.state.chart.description()}</small></h2>
                     </div>
                     <div className="pull-right">
