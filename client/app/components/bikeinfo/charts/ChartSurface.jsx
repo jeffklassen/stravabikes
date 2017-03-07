@@ -30,13 +30,13 @@ class ChartSurface extends React.Component {
     }
     render() {
         //iterate through ride activities, grab previous rows' data
-        let allBikeData = buildRows(this.props.activities, this.props.bikes, this.state.chart.rowBuilder(this.props.prefersMetric));
+        let allBikeData = buildRows(this.props.activities, this.props.bikes, this.state.chart.rowBuilder(this.props.prefersMetric), this.state.chart.description(this.props.prefersMetric));
 
         return (
             <div>
                 <div className="row">
                     <div className="col-md-2">
-                        <h2 >{this.state.chart.label}</h2>
+                        <h2 >{this.state.chart.label} <small>{this.state.chart.description()}</small></h2>
                     </div>
                     <div className="pull-right">
                         <ChartChooser
@@ -68,6 +68,7 @@ class ChartSurface extends React.Component {
                         legend_toggle
                     />
                 </div>
+
             </div>
         );
     }
