@@ -1,6 +1,6 @@
 import React from 'react';
 import { Chart } from 'react-google-charts';
-import { buildRows, buildColumns, generateYLabel } from '../summary/athleteDataManip';
+import { buildRows, buildColumns } from '../summary/athleteDataManip';
 import ChartChooser from './ChartChooser.jsx';
 
 import chartBuilders from './chartBuilders';
@@ -27,7 +27,7 @@ class ChartSurface extends React.Component {
     }
     render() {
         //iterate through ride activities, grab previous rows' data
-        let allBikeData = buildRows(this.props.activities, this.props.bikes, this.state.chart.rowBuilder(this.props.prefersMetric), this.state.chart.description(this.props.prefersMetric));
+        let rows = buildRows(this.props.activities, this.props.bikes, this.state.chart.rowBuilder(this.props.prefersMetric), this.state.chart.description(this.props.prefersMetric));
 
         return (
             <div>
@@ -50,13 +50,13 @@ class ChartSurface extends React.Component {
                     <Chart
                         chartType="AnnotatedTimeLine"
                         columns={this.state.columns}
-                        rows={allBikeData}
+                        rows={rows}
                         options={{
-                           
+
                             thickness: 3,
                             displayZoomButtons: false
                         }}
-                        graph_id="ScatterChart"
+                        graph_id="chart"
                         width="100%"
                         height="400px"
                         legend_toggle
