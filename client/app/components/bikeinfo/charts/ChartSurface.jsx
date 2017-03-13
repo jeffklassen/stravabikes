@@ -11,15 +11,12 @@ class ChartSurface extends React.Component {
     constructor(props) {
         super(props);
 
-        let yAxisString = generateYLabel(props.prefersMetric);
-        //activities = activities.filter(activity => activity.gear_id === firstBikeId);
-
         //create date column for chart
         let columns = buildColumns(props.bikes);
 
 
         //allBikeData = convertMetric(props.metric, allBikeData);
-        this.state = { chart: chartBuilders[0], columns, yAxisString };
+        this.state = { chart: chartBuilders[0], columns };
 
 
     }
@@ -55,10 +52,7 @@ class ChartSurface extends React.Component {
                         columns={this.state.columns}
                         rows={allBikeData}
                         options={{
-                            vAxis: { title: this.state.yAxisString },
-                            titleTextStyle: { bold: true, fontSize: 20 },
-                            legend: { textStyle: { bold: true } },
-                            curveType: 'function',
+                           
                             thickness: 3,
                             displayZoomButtons: false
                         }}
