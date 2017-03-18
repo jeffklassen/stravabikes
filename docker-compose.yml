@@ -2,7 +2,18 @@ version: "2"
 services:
   mongo:
     image: mongo:3.4
-    ports:
-      - 27017:27017
     volumes:
       - ./data:/data/db
+  track-my-bike:
+    links:
+      - mongo
+    environment:
+      - CLIENTSECRET=xx
+    build: 
+       context: .
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    command: bash -c "npm run webpack && npm start"

@@ -1,0 +1,7 @@
+
+
+FUTURE ADDITIONS:
+
+For Speed:
+    start inserting records upon first response
+    currently waiting until all records are returned
