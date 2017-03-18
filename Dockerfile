@@ -1,4 +1,4 @@
-FROM node:6.10
+FROM node
 
 ## Uncomment the following line if you want to expose ports
 EXPOSE 3000 
