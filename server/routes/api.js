@@ -96,7 +96,7 @@ module.exports = app => {
 
 
     clientRoutes.get('/bikes/*', function (req, res) {
-        res.sendFile(req.path, config);
+        res.sendFile(req.path.substring(6), config);
     });
 
     app.use('/', clientRoutes);
