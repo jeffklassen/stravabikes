@@ -8,7 +8,7 @@ services:
     links:
       - mongo
     environment:
-      - CLIENTSECRET=xx
+      - CLIENTSECRET=6b4f5d86f8a329764290a000bc44633c26a3ab56
     build: 
        context: .
     volumes:
