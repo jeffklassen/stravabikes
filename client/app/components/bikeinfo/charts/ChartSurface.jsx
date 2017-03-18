@@ -1,6 +1,7 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Chart } from 'react-google-charts';
-import { buildRows, buildColumns, generateYLabel } from '../summary/athleteDataManip';
+import { buildRows, buildColumns } from '../summary/athleteDataManip';
 import ChartChooser from './ChartChooser.jsx';
 
 import chartBuilders from './chartBuilders';
@@ -11,31 +12,39 @@ class ChartSurface extends React.Component {
     constructor(props) {
         super(props);
 
-        let yAxisString = generateYLabel(props.prefersMetric);
-        //activities = activities.filter(activity => activity.gear_id === firstBikeId);
-
         //create date column for chart
         let columns = buildColumns(props.bikes);
-
+        this.buildRows = this.buildRows.bind(this);
 
         //allBikeData = convertMetric(props.metric, allBikeData);
-        this.state = { chart: chartBuilders[0], columns, yAxisString };
+        let chart = chartBuilders[0];
+        let rows = this.buildRows(chart);
+        this.state = { columns, chart, rows };
 
 
+    }
+    componentDidMount() {
+        // for some reason, the first time the google chart is rendered, it does not properly calulate the width of the container.
+        // this is a hack, but forces correct width detection each time.
+        this.forceUpdate();
+    }
+    buildRows(chart) {
+        let rows = buildRows(this.props.activities, this.props.bikes, chart.rowBuilder(this.props.prefersMetric), chart.description(this.props.prefersMetric));
+
+        return rows;
     }
     onChange(newChartId) {
         let newChart = chartBuilders
             .reduce((reducer, chart) => chart.id === newChartId ? chart : reducer, {});
-        this.setState({ chart: newChart });
+        let rows = this.buildRows(newChart);
+        this.setState({ chart: newChart, rows });
     }
     render() {
-        //iterate through ride activities, grab previous rows' data
-        let allBikeData = buildRows(this.props.activities, this.props.bikes, this.state.chart.rowBuilder(this.props.prefersMetric), this.state.chart.description(this.props.prefersMetric));
 
         return (
             <div>
                 <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                         <h2 >{this.state.chart.label} <small>{this.state.chart.description()}</small></h2>
                     </div>
                     <div className="pull-right">
@@ -51,18 +60,16 @@ class ChartSurface extends React.Component {
                 </div>
                 <div className="row">
                     <Chart
+                        ref="c"
                         chartType="AnnotatedTimeLine"
                         columns={this.state.columns}
-                        rows={allBikeData}
+                        rows={this.state.rows}
                         options={{
-                            vAxis: { title: this.state.yAxisString },
-                            titleTextStyle: { bold: true, fontSize: 20 },
-                            legend: { textStyle: { bold: true } },
-                            curveType: 'function',
+
                             thickness: 3,
                             displayZoomButtons: false
                         }}
-                        graph_id="ScatterChart"
+                        graph_id="chart"
                         width="100%"
                         height="400px"
                         legend_toggle
