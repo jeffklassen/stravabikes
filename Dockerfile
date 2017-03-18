@@ -8,5 +8,3 @@ WORKDIR /app
 ADD package.json /app
 
 RUN npm install
-
-RUN npm run webpack
