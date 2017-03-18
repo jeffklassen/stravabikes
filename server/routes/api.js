@@ -28,7 +28,7 @@ module.exports = app => {
 
 
     apiRoutes.use((req, res, next) => {
-        console.log(req.url, 'requested')
+        console.log(req.url, 'requested');
         let sessionId = req.cookies.sessionId;
         if (!sessionId) {
             console.log('authentication failed');
@@ -95,7 +95,7 @@ module.exports = app => {
     app.use('/api', apiRoutes);
 
 
-    clientRoutes.get('/client/*', function (req, res) {
+    clientRoutes.get('/bikes/*', function (req, res) {
         res.sendFile(req.path, config);
     });
 

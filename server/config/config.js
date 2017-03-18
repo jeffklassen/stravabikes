@@ -6,7 +6,7 @@ config.clientId = 5893;
 config.authProvider = {
     authUrl: 'https://www.strava.com/oauth/authorize',
     clientId: 5893,
-    redirectUri: 'http://127.0.0.1:3000/client/'
+    redirectUri: 'https://backup.jklass.net/bikes/'
 
 };
 config.clientSecret = process.env.CLIENTSECRET;
