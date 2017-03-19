@@ -6,7 +6,7 @@ import AppSurface  from './components/AppSurface.jsx';
 const App = () => {
     return (
         <div className="container">
-            <Header vendorName="Strava"/>
+            <Header/>
             <AppSurface />
         </div>
     );
