@@ -9,7 +9,7 @@ class LoginLink extends React.Component {
         this.getLoginUrl();
     }
     getLoginUrl() {
-        request.get('/bikesapi/authDetails')
+        request.get('api/authDetails')
             .then(authDetailsResponse => {
                 let { authUrl, clientId, redirectUri } = authDetailsResponse.body;
                 //http://127.0.0.1:3000/client/

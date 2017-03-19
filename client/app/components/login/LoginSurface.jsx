@@ -16,12 +16,12 @@ class LoginSurface extends React.Component {
     }
     saveAuthCode(authCode) {
         request
-            .post('/bikesapi/connectToStrava')
+            .post('api/connectToStrava')
             .send({ authCode })
             .then(response => {
                 console.log(response.body);
                 this.setState({ msg: 'updating your data' });
-                return request.get('/bikesapiapi/loadActivities');
+                return request.get('api/loadActivities');
             })
             .then(resp => {
                 this.setState({ msg: `loaded ${resp.body.activityCount} activities` });

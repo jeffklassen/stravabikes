@@ -17,9 +17,9 @@ class BikeInfoSurface extends React.Component {
     }
     refreshActivites() {
         this.setState({ activities: null });
-        request.get('/bikesapi/loadActivities')
+        request.get('api/loadActivities')
             .then(() => {
-                return request.get('/bikesapi/activities');
+                return request.get('api/activities');
             })
             .then(resp => {
                 this.setState({
@@ -28,7 +28,7 @@ class BikeInfoSurface extends React.Component {
             });
     }
     loadAthlete() {
-        Promise.all([request.get('/bikesapi/athleteSummary'), request.get('/bikesapi/activities')])
+        Promise.all([request.get('apiathleteSummary'), request.get('apiapi/activities')])
             .then(([summaryResponse, activityResponse]) => {
                 let athleteSummary = summaryResponse.body;
 
