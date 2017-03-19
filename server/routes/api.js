@@ -92,7 +92,7 @@ module.exports = app => {
             });
 
     });
-    app.use('/api', apiRoutes);
+    app.use('/bikesapi', apiRoutes);
 
 
     clientRoutes.get('/*', function (req, res) {
