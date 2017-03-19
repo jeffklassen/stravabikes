@@ -13,7 +13,7 @@ class AppSurface extends React.Component {
     isAuthenticated() {
         request.get('/api/isAuthenticated')
             .then(() => {
-                window.history.pushState('', '', '/bikes/');
+                window.history.pushState('', '', '/');
                 this.setState({ ready: true, isLoggedIn: true });
             })
             .catch((err) => {

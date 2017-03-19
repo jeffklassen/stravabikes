@@ -1,7 +1,7 @@
 const path = require('path');
 
 let config = {};
-config.options = { root: path.normalize(__dirname + '/../../') };
+config.options = { root: path.normalize(__dirname + '/../../client/') };
 config.clientId = 5893;
 config.authProvider = {
     authUrl: 'https://www.strava.com/oauth/authorize',

@@ -22,7 +22,7 @@ class LoginLink extends React.Component {
     }
     render() {
         return (this.state.url ? (<a href={this.state.url}>
-            <img src="/client/images/btn_strava_connectwith_orange@2x.png" />
+            <img src="/images/btn_strava_connectwith_orange@2x.png" />
         </a>) : <span>loading...</span>
         );
     }

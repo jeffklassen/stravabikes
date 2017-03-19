@@ -95,7 +95,7 @@ module.exports = app => {
     app.use('/api', apiRoutes);
 
 
-    clientRoutes.get('/client/*', function (req, res) {
+    clientRoutes.get('/*', function (req, res) {
         res.sendFile(req.path, config);
     });
 
