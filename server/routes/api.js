@@ -55,6 +55,7 @@ module.exports = app => {
         if (req.sessionData && req.sessionData.athleteId) {
             res.send({ loggedIn: true });
         }
+        else { /*res.(); */}
     });
     apiRoutes.get('/loadActivities', (req, res) => {
         athleteController.loadActivities(req.sessionData.accessToken)
@@ -95,7 +96,7 @@ module.exports = app => {
     app.use('/api', apiRoutes);
 
 
-    clientRoutes.get('/client/*', function (req, res) {
+    clientRoutes.get('/*', function (req, res) {
         res.sendFile(req.path, config);
     });
 

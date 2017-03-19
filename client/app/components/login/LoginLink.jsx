@@ -9,7 +9,7 @@ class LoginLink extends React.Component {
         this.getLoginUrl();
     }
     getLoginUrl() {
-        request.get('/api/authDetails')
+        request.get('api/authDetails')
             .then(authDetailsResponse => {
                 let { authUrl, clientId, redirectUri } = authDetailsResponse.body;
                 //http://127.0.0.1:3000/client/
@@ -22,7 +22,7 @@ class LoginLink extends React.Component {
     }
     render() {
         return (this.state.url ? (<a href={this.state.url}>
-            <img src="/client/images/btn_strava_connectwith_orange@2x.png" />
+            <img src="./Images/btn_strava_connectwith_orange@2x.png" />
         </a>) : <span>loading...</span>
         );
     }
