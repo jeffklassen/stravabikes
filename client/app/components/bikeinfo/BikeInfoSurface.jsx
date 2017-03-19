@@ -28,7 +28,7 @@ class BikeInfoSurface extends React.Component {
             });
     }
     loadAthlete() {
-        Promise.all([request.get('apiathleteSummary'), request.get('apiapi/activities')])
+        Promise.all([request.get('api/athleteSummary'), request.get('api/activities')])
             .then(([summaryResponse, activityResponse]) => {
                 let athleteSummary = summaryResponse.body;
 
