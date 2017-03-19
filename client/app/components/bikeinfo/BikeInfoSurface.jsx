@@ -65,7 +65,7 @@ class BikeInfoSurface extends React.Component {
                                 prefersMetric={this.state.prefersMetric}
                             >
 
-                                <Link onClick={this.refreshActivites}>Refresh Strava Data</Link>
+                                <Link onClick={this.refreshActivites} style={{color: 'fc4c02'}}>Refresh Strava Data</Link>
                             </ChartSurface>
                         ) : <span>Loading... </span>}
                     </div>
