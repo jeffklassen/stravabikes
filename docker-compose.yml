@@ -4,6 +4,7 @@ services:
     image: mongo:3.4
     volumes:
       - ./data:/data/db
+    restart: always
   track-my-bike:
     links:
       - mongo
@@ -17,3 +18,4 @@ services:
     ports:
       - 3000:3000
     command: bash -c "npm run webpack && npm start"
+    restart: always
