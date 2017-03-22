@@ -1,11 +1,13 @@
 import React from 'react';
-import * as request from 'superagent';
 import queryString from 'query-string';
 import LoginLink from './LoginLink.jsx';
+import authService from '../../services/authService.js';
+import activitiesService from '../../services/activitiesService';
 
 class LoginSurface extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {};
         const queryParams = queryString.parse(location.search);
         if (queryParams.code) {
@@ -15,24 +17,25 @@ class LoginSurface extends React.Component {
 
     }
     saveAuthCode(authCode) {
-        request
-            .post('api/connectToStrava')
-            .send({ authCode })
+        authService.completeLoginWithStrava(authCode)
             .then(response => {
-                console.log(response.body);
+                //console.log(response.body);
                 this.setState({ msg: 'updating your data' });
-                return request.get('api/loadActivities');
+                return activitiesService.loadActivities();
             })
             .then(resp => {
                 this.setState({ msg: `loaded ${resp.body.activityCount} activities` });
-                this.props.isAuthenticated();    
+                this.props.isAuthenticated();
             });
     }
 
     render() {
         return (<div>
-            {this.state.authcode ? (<span>{this.state.msg|| 'completing login with strava'}</span>) :
-                (<LoginLink />)}
+            {this.state.authcode ? (
+                <span>{this.state.msg || 'completing login with strava'}</span>
+            ) : (
+                    <LoginLink />
+                )}
         </div>);
     }
 }

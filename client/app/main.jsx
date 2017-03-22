@@ -39,7 +39,7 @@ ReactDOM.render(
     <Router history={Router.hashHistory}>
         <div className="container">
             <Header />
-            <Route exact={true} path="/" component={AppSurface} />
+            <Route exact={true} path="/" component={BikeInfoSurface} />
             <Route exact={true} path="/login" component={LoginSurface} />
         </div>
     </Router>,
