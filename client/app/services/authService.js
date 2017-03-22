@@ -6,6 +6,9 @@ export default {
     },
     getStravaAuthDetails: () => {
         return request.get('api/authDetails');
+    },
+    isAuthenticated: () => {
+        return request.get('api/isAuthenticated');
     }
 };
 

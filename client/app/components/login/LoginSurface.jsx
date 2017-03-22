@@ -25,7 +25,8 @@ class LoginSurface extends React.Component {
             })
             .then(resp => {
                 this.setState({ msg: `loaded ${resp.body.activityCount} activities` });
-                this.props.isAuthenticated();
+                return this.props.checkAuth();
+
             });
     }
 
