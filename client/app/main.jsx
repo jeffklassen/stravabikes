@@ -39,6 +39,7 @@ class App extends React.Component {
         super(props);
         this.state = { isLoggedIn: false };
         this.checkAuth = this.checkAuth.bind(this);
+        this.checkAuth();
     }
     checkAuth() {
         authService.isAuthenticated()
@@ -49,6 +50,7 @@ class App extends React.Component {
                 this.setState({ isLoggedIn: false });
             });
     }
+    
     render() {
         return (
             <Router history={Router.hashHistory}>
