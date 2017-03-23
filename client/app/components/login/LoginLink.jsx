@@ -6,6 +6,9 @@ class LoginLink extends React.Component {
         super(props);
         this.state = {};
         this.getLoginUrl = this.getLoginUrl.bind(this);
+        
+    }
+    componentDidMount() {
         this.getLoginUrl();
     }
     getLoginUrl() {
