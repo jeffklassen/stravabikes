@@ -7,6 +7,8 @@ import authController from '../controllers/authController';
 let clientRoutes = express.Router();
 let apiRoutes = express.Router();
 
+let routePrefix = process.env.NODE_ENV == 'dev' ? '/bikes' : '';
+
 module.exports = app => {
 
     apiRoutes.get('/authDetails', (req, res) => {
@@ -93,7 +95,7 @@ module.exports = app => {
             });
 
     });
-    app.use('/api', apiRoutes);
+    app.use(routePrefix + '/api', apiRoutes);
 
 
     clientRoutes.get('/Images*', function (req, res) {
@@ -110,6 +112,6 @@ module.exports = app => {
         res.sendFile('index.html', config);
     });
 
-    app.use('/', clientRoutes);
+    app.use(routePrefix + '/', clientRoutes);
 
 };
