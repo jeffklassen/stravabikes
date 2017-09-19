@@ -68,6 +68,8 @@ async function getAthlete(authId) {
     } catch (err) {
         throw err;
     }
+    console.log('ATHLETE RESPONSE BODY')
+    console.log(response.body)
     return athlete;
 }
 
