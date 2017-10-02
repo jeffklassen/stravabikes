@@ -6,19 +6,24 @@ class LoginLink extends React.Component {
         super(props);
         this.state = {};
         this.getLoginUrl = this.getLoginUrl.bind(this);
-        
+        this._isMounted = false;
     }
     componentDidMount() {
+        this._isMounted = true;
         this.getLoginUrl();
+    }
+    componentWillUnmount() {
+        this._isMounted = false;
     }
     getLoginUrl() {
         authService.getStravaAuthDetails()
             .then(authDetailsResponse => {
                 let { authUrl, clientId, redirectUri } = authDetailsResponse.body;
-
-                this.setState({
-                    url: `${authUrl}?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&approval_prompt=auto`
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        url: `${authUrl}?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&approval_prompt=auto`
+                    });
+                }
             });
 
     }
