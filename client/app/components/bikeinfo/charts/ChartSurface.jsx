@@ -5,7 +5,7 @@ import { buildRows, buildColumns } from '../summary/athleteDataManip';
 import ChartChooser from './ChartChooser.jsx';
 
 import chartBuilders from './chartBuilders';
-
+import PropTypes from 'prop-types';
 
 
 class ChartSurface extends React.Component {
@@ -13,15 +13,19 @@ class ChartSurface extends React.Component {
         super(props);
 
         //create date column for chart
-        let columns = buildColumns(props.bikes);
-        this.buildRows = this.buildRows.bind(this);
-
-        //allBikeData = convertMetric(props.metric, allBikeData);
-        let chart = chartBuilders[0];
-        let rows = this.buildRows(chart);
-        this.state = { columns, chart, rows };
-
-
+        try{
+            let columns = buildColumns(props.bikes);
+            this.buildRows = this.buildRows.bind(this);
+            let chart = chartBuilders[0];
+            let rows = this.buildRows(chart);
+            this.state = { columns, chart, rows };
+        }
+        catch (e){
+            this.state = {
+                error: e
+            };
+        }
+        
     }
     componentDidMount() {
         // for some reason, the first time the google chart is rendered, it does not properly calulate the width of the container.
@@ -41,7 +45,7 @@ class ChartSurface extends React.Component {
     }
     render() {
 
-        return (
+        return (this.state.error ? <div>{this.state.error}</div>:
             <div>
                 <div className="row">
                     <div className="col-md-3">
@@ -80,5 +84,7 @@ class ChartSurface extends React.Component {
         );
     }
 }
-
+ChartSurface.propTypes = {
+    bikes: PropTypes.array.isRequired
+};
 export default ChartSurface;

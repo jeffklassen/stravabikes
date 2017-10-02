@@ -7,8 +7,6 @@ import authController from '../controllers/authController';
 let clientRoutes = express.Router();
 let apiRoutes = express.Router();
 
-let routePrefix = process.env.NODE_ENV == 'dev' ? '/bikes' : '';
-
 module.exports = app => {
 
     apiRoutes.get('/authDetails', (req, res) => {
@@ -24,6 +22,11 @@ module.exports = app => {
             .then(sessionId => {
                 res.cookie('sessionId', sessionId);
                 res.send({ loggedIn: true });
+            })
+            .catch(e => {
+                console.log(e);
+                res.status(500);
+                res.send({status: 'unable to authenticate', e})    ;
             });
     });
 
@@ -95,23 +98,23 @@ module.exports = app => {
             });
 
     });
-    app.use(routePrefix + '/api', apiRoutes);
+    app.use( '/api', apiRoutes);
 
 
     clientRoutes.get('/Images*', function (req, res) {
-        console.log('Images called')
+        console.log('Images called');
         res.sendFile(req.path, config);
     });
     clientRoutes.get('/build*', function (req, res) {
-        console.log('build called')
+        console.log('build called');
         res.sendFile(req.path, config);
     });
 
     clientRoutes.get('/*', function (req, res) {
-        console.log('splat called')
+        console.log('splat called');
         res.sendFile('index.html', config);
     });
 
-    app.use(routePrefix + '/', clientRoutes);
+    app.use('/', clientRoutes);
 
 };
