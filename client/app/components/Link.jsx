@@ -1,6 +1,7 @@
 // adapted from here: http://redux.js.org/docs/basics/ExampleTodoList.html
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Link = ({ children, onClick, style }) => {
     let defaultStyle = { cursor: 'pointer' };
