@@ -26,13 +26,6 @@ class ChartSurface extends React.Component {
             };
         }
         
-        
-
-        //allBikeData = convertMetric(props.metric, allBikeData);
-        
-     
-
-
     }
     componentDidMount() {
         // for some reason, the first time the google chart is rendered, it does not properly calulate the width of the container.
