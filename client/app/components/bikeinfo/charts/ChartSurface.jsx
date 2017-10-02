@@ -85,7 +85,6 @@ class ChartSurface extends React.Component {
     }
 }
 ChartSurface.propTypes = {
-    bikes: PropTypes.array.isRequired,
-    foo: PropTypes.number
+    bikes: PropTypes.array.isRequired
 };
 export default ChartSurface;
