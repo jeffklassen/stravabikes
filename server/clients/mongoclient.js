@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
+import config from '../config/config';
 
-const dbURL = 'mongodb://mongo:27017/strava';
+const dbURL = config.mongo.url;
 const collectionNames = {
     athlete: 'athlete',
     activity: 'activity',

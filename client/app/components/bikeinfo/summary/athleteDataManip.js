@@ -29,6 +29,9 @@ function buildRows(activities, bikes, rowBuilder) {
     if (!rowBuilder && typeof rowBuilder !== 'function') {
         throw 'rowBuilder must be a function';
     }
+    if (!bikes) {
+        throw 'bikes must not be null';
+    }
     return activities.reduce((reducer, activity) => {
         let previousRow;
         if (reducer[reducer.length - 1]) {
@@ -61,6 +64,10 @@ function buildRows(activities, bikes, rowBuilder) {
 }
 
 function buildColumns(bikes) {
+    console.log('bikes', bikes);
+    if (!bikes) {
+        throw 'bikes must not be null';
+    }
     let columns = [{
         label: 'Date',
         type: 'date'

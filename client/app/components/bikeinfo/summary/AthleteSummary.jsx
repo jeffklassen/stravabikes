@@ -12,7 +12,7 @@ const AthleteSummary = ({athlete, summaries}) => {
                 <img src={athlete.profile} className="pull-left" style={avatarStyle} />
                 <div className="col-md-3">
                     <h2 className="row"> {`${athlete.firstname} ${athlete.lastname}`}</h2>
-                    <span className="row" style={bikeCountStyle}>{athlete.bikes.length} bikes</span>
+                    <span className="row" style={bikeCountStyle}>{athlete.bikes&&athlete.bikes.length} bikes</span>
                 </div>
                 <div className="summary">
                     {summaries

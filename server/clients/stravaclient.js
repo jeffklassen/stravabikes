@@ -3,14 +3,15 @@ import config from '../config/config';
 
 const stravaAPIURL = 'https://www.strava.com/api/v3/';
 async function getAuthToken(authCode) {
+
     return request.post('https://www.strava.com/oauth/token')
         .send({
-            client_id: config.clientId,
-            client_secret: config.clientSecret,
+            client_id: config.strava.authProvider.clientId,
+            client_secret: config.strava.clientSecret,
             code: authCode
         })
         .then(response => {
-            console.log(response)
+            console.log(response.body);
             return response.body;
         });
 }
@@ -35,7 +36,7 @@ async function fullStravaActivities(authId) {
             let activities = response.body;
             stravaActivities = stravaActivities.concat(activities);
             pageCounter++;
-            console.log('page returned, got', activities.length)
+            console.log('page returned, got', activities.length);
             if (activities.length < params.per_page) {
                 morePages = false;
             }
@@ -62,6 +63,9 @@ async function getAthlete(authId) {
         let response = await request
             .get(stravaAthleteUrl)
             .set(headers);
+        
+        console.log('RESPONSE')
+        console.log(response);
 
         athlete = response.body;
 
