@@ -56,15 +56,15 @@ class App extends React.Component {
             <Router history={Router.hashHistory}>
                 <div className="container">
                     <Header />
-                    <Route exact={true} path="/bikes/" render={() => (
+                    <Route exact={true} path="/" render={() => (
                         this.state.isLoggedIn ? (
                             <BikeInfoSurface />
 
-                        ) : (<Redirect to="/bikes/login" />)
+                        ) : (<Redirect to="/login" />)
                     )} />
-                    <Route exact={true} path="/bikes/login" render={() => (
+                    <Route exact={true} path="/login" render={() => (
                         this.state.isLoggedIn ? (
-                            <Redirect to="/bikes/" />
+                            <Redirect to="/" />
                         ) : (<LoginSurface checkAuth={this.checkAuth}/>)
                     )} />
                 </div>

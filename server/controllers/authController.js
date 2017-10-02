@@ -5,7 +5,7 @@ import uuid from 'uuid/v4';
 
 const authController = {
     getAuthDetails: () => {
-        return Promise.resolve(config.authProvider);
+        return Promise.resolve(config.strava.authProvider);
     },
 
     //checks authentication
