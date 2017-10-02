@@ -3,12 +3,6 @@ import config from '../config/config';
 
 const stravaAPIURL = 'https://www.strava.com/api/v3/';
 async function getAuthToken(authCode) {
-    console.log('sending');
-    console.log({
-        client_id: config.strava.authProvider.clientId,
-        client_secret: config.strava.clientSecret,
-        code: authCode
-    });
 
     return request.post('https://www.strava.com/oauth/token')
         .send({
@@ -69,6 +63,9 @@ async function getAthlete(authId) {
         let response = await request
             .get(stravaAthleteUrl)
             .set(headers);
+        
+        console.log('RESPONSE')
+        console.log(response);
 
         athlete = response.body;
 

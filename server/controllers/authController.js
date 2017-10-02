@@ -1,5 +1,5 @@
 import config from '../config/config';
-import { getAuthToken } from '../clients/stravaclient';
+import { getAuthToken, getAthlete } from '../clients/stravaclient';
 import { mapTokenToAthlete, insertAthlete, getSessionData } from '../clients/mongoclient';
 import uuid from 'uuid/v4';
 
@@ -16,6 +16,12 @@ const authController = {
     connectToStrava: (authCode) => {
 
         return getAuthToken(authCode)
+            .then(( {access_token }) => {
+                return getAthlete(access_token)
+                    .then( athlete  => { 
+                        return { access_token, athlete };
+                    });
+            })
             .then(({ access_token, athlete }) => {
                 athlete._id = athlete.id;
 
