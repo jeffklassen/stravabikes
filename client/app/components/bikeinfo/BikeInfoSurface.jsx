@@ -14,53 +14,56 @@ class BikeInfoSurface extends React.Component {
         this.state = { summary: {}, athlete: null };
 
         this.checkAuth = this.checkAuth.bind(this);
-        this.checkAuth(this.props);
-        
-        this.loadAthlete = this.loadAthlete.bind(this);
-        this.refreshActivites = this.refreshActivites.bind(this);
-        this.loadAthlete();
-        
+        this.checkAuth(this.props)
+            .then(() => {
+                this.loadAthlete = this.loadAthlete.bind(this);
+                this.refreshActivites = this.refreshActivites.bind(this);
+                this.loadAthlete();
+            });
+
+
+
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.location !== this.props.location) {
             this.checkAuth(nextProps);
         }
     }
-    checkAuth(params) {
+    async checkAuth(params) {
         const { history } = params;
-        authService
+        return authService
             .isAuthenticated()
-            .catch(e => history.replace({ pathname: '/login' }));
+            .catch(e => {
+                history.replace({ pathname: '/login' });
+                // we have to reject the promise
+                return Promise.reject();
+            });
     }
 
-    refreshActivites() {
+    async refreshActivites() {
         this.setState({ activities: null });
-        request.get('api/loadActivities')
-            .then(() => {
-                return request.get('api/activities');
-            })
-            .then(resp => {
-                this.setState({
-                    activities: resp.body
-                });
-            });
+        await request.get('api/loadActivities');
+
+        let resp = request.get('api/activities');
+
+        this.setState({
+            activities: resp.body
+        });
+
     }
-    loadAthlete() {
-        Promise.all([request.get('api/athleteSummary'), request.get('api/activities')])
-            .then(([summaryResponse, activityResponse]) => {
-                let athleteSummary = summaryResponse.body;
+    async loadAthlete() {
+        let [summaryResponse, activityResponse] = await Promise.all([request.get('api/athleteSummary'), request.get('api/activities')])
 
-                let athleteMetricPreference = athleteSummary.athlete.measurement_preference;
-                let prefersMetric = extractMetricPreference(athleteMetricPreference);
-                this.setState({
-                    athlete: athleteSummary.athlete,
-                    summaries: athleteSummary.summary,
-                    activities: activityResponse.body,
-                    prefersMetric
-                });
+        let athleteSummary = summaryResponse.body;
 
-
-            });
+        let athleteMetricPreference = athleteSummary.athlete.measurement_preference;
+        let prefersMetric = extractMetricPreference(athleteMetricPreference);
+        this.setState({
+            athlete: athleteSummary.athlete,
+            summaries: athleteSummary.summary,
+            activities: activityResponse.body,
+            prefersMetric
+        });
     }
 
     render() {
