@@ -24,6 +24,8 @@ class ChartSurface extends React.Component {
             this.state = {
                 error: e
             };
+
+            console.log('PARAMMMMSSS', props.params);
         }
         
     }
