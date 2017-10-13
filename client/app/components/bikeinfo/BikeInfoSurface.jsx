@@ -64,6 +64,8 @@ class BikeInfoSurface extends React.Component {
             activities: activityResponse.body,
             prefersMetric
         });
+
+        return; 
     }
 
     render() {
