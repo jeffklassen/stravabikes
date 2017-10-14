@@ -60,7 +60,7 @@ module.exports = app => {
         if (req.sessionData && req.sessionData.athleteId) {
             res.send({ loggedIn: true });
         }
-        else { /*res.(); */ }
+        else { res.status(401).send(); }
     });
     apiRoutes.get('/loadActivities', (req, res) => {
         athleteController.loadActivities(req.sessionData.accessToken)
