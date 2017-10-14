@@ -16,7 +16,6 @@ class App extends React.Component {
         this.checkAuth = this
             .checkAuth
             .bind(this);
-        // this.checkAuth();
     }
     checkAuth() {
         authService
@@ -36,12 +35,20 @@ class App extends React.Component {
                     <Header />
                     <Switch>
                         <Route
-                            exact={true}
+                            exact
                             path="/login"
                             render={() => (<LoginSurface checkAuth={this.checkAuth} />)} />
-                        <Route 
-                            path="/:chartType?/:measure?/"
-                            render={({ match }) => (<BikeInfoSurface params={match.params} checkAuth={this.checkAuth} />)} />
+                        <Route
+                            path="/:chartType/:measure"
+                            render={({ match }) => (
+                                <BikeInfoSurface params={match.params} checkAuth={this.checkAuth} />)} />
+                        <Route
+                            path="/"
+                            exact
+                            render={() => (<BikeInfoSurface checkAuth={this.checkAuth} />)}>
+
+
+                        </Route>
                     </Switch>
                 </div>
             </Router>

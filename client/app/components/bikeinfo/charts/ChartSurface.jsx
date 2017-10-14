@@ -25,8 +25,10 @@ class ChartSurface extends React.Component {
                 error: e
             };
 
-            console.log('PARAMMMMSSS', props.params);
+           
         }
+
+        console.log('PARAMMMMSSS', props);
         
     }
     componentDidMount() {

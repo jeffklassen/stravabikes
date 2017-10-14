@@ -20,9 +20,6 @@ class BikeInfoSurface extends React.Component {
                 this.refreshActivites = this.refreshActivites.bind(this);
                 this.loadAthlete();
             });
-
-
-
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.location !== this.props.location) {
@@ -35,6 +32,7 @@ class BikeInfoSurface extends React.Component {
             .isAuthenticated()
             .catch(e => {
                 history.replace({ pathname: '/login' });
+
                 // we have to reject the promise
                 return Promise.reject();
             });
@@ -42,9 +40,9 @@ class BikeInfoSurface extends React.Component {
 
     async refreshActivites() {
         this.setState({ activities: null });
-        await request.get('api/loadActivities');
+        await request.get('/api/loadActivities');
 
-        let resp = request.get('api/activities');
+        let resp = request.get('/api/activities');
 
         this.setState({
             activities: resp.body
@@ -52,7 +50,9 @@ class BikeInfoSurface extends React.Component {
 
     }
     async loadAthlete() {
-        let [summaryResponse, activityResponse] = await Promise.all([request.get('api/athleteSummary'), request.get('api/activities')])
+        let [summaryResponse, activityResponse] = await Promise.all([
+            request.get('/api/athleteSummary'),
+            request.get('/api/activities')]);
 
         let athleteSummary = summaryResponse.body;
 
@@ -83,7 +83,7 @@ class BikeInfoSurface extends React.Component {
                     <div className="row">
                         {this.state.activities ? (
                             <ChartSurface
-                                chartParams={this.props.params}
+                                chartParams={this.props}
                                 activities={this.state.activities}
                                 bikes={this.state.athlete.bikes}
                                 prefersMetric={this.state.prefersMetric}
