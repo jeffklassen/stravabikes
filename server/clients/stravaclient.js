@@ -4,16 +4,16 @@ import config from '../config/config';
 const stravaAPIURL = 'https://www.strava.com/api/v3/';
 async function getAuthToken(authCode) {
 
-    return request.post('https://www.strava.com/oauth/token')
+    let response = await request.post('https://www.strava.com/oauth/token')
         .send({
             client_id: config.strava.authProvider.clientId,
             client_secret: config.strava.clientSecret,
             code: authCode
-        })
-        .then(response => {
-            console.log(response.body);
-            return response.body;
         });
+
+    console.log(response.body);
+    return response.body;
+
 }
 
 async function fullStravaActivities(authId) {
@@ -63,7 +63,7 @@ async function getAthlete(authId) {
         let response = await request
             .get(stravaAthleteUrl)
             .set(headers);
-        
+
         console.log('RESPONSE')
         console.log(response);
 
@@ -75,17 +75,6 @@ async function getAthlete(authId) {
     return athlete;
 }
 
-/*fullStravaActivities()
-    .then(function (allStravaActivities) {
-        console.log(allStravaActivities.length);
-        return allStravaActivities;
-    });
 
-
-getAthlete()
-    .then(function (athelete) {
-        console.log(athelete);
-    });
-*/
 
 export { getAthlete, fullStravaActivities, getAuthToken };
