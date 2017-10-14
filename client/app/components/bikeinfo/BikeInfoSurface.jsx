@@ -83,7 +83,7 @@ class BikeInfoSurface extends React.Component {
                     <div className="row">
                         {this.state.activities ? (
                             <ChartSurface
-                                chartParams={this.props}
+                                chartParams={this.props.params}
                                 activities={this.state.activities}
                                 bikes={this.state.athlete.bikes}
                                 prefersMetric={this.state.prefersMetric}

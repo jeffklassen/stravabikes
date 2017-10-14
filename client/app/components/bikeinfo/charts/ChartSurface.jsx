@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Chart } from 'react-google-charts';
 import { buildRows, buildColumns } from '../summary/athleteDataManip';
 import ChartChooser from './ChartChooser.jsx';
-
+import { withRouter } from 'react-router-dom';
 import chartBuilders from './chartBuilders';
 import PropTypes from 'prop-types';
 
@@ -12,24 +12,34 @@ class ChartSurface extends React.Component {
     constructor(props) {
         super(props);
 
-        //create date column for chart
-        try{
-            let columns = buildColumns(props.bikes);
-            this.buildRows = this.buildRows.bind(this);
-            let chart = chartBuilders[0];
-            let rows = this.buildRows(chart);
-            this.state = { columns, chart, rows };
-        }
-        catch (e){
-            this.state = {
-                error: e
-            };
+        this.checkChartParams = this.checkChartParams.bind(this);
+        this.buildChart = this.buildChart.bind(this);
+        this.buildRows = this.buildRows.bind(this);
 
-           
-        }
+        this.checkChartParams(props)
+            .then(this.buildChart);
 
-        console.log('PARAMMMMSSS', props);
-        
+        this.state = {};
+
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.location !== this.props.location) {
+            this.checkChartParams(nextProps)
+                .then(this.buildChart);
+        }
+    }
+    async checkChartParams(params) {
+        const { history } = params;
+        const chartParams = params.chartParams;
+        if (chartParams && chartBuilders.map(builder => builder.id).includes(chartParams.measure)) {
+            return Promise.resolve(chartParams);
+
+        } else {
+            history.replace({ pathname: '/chart/' + chartBuilders[0].id });
+            return Promise.reject('chart params not correct');
+        }
+        console.log(params.chartParams);
+        // if params 
     }
     componentDidMount() {
         // for some reason, the first time the google chart is rendered, it does not properly calulate the width of the container.
@@ -41,15 +51,33 @@ class ChartSurface extends React.Component {
 
         return rows;
     }
+    buildChart(chartParams) {
+        //create date column for chart
+        try {
+            let columns = buildColumns(this.props.bikes);
+
+
+            let chart = chartBuilders
+                .reduce((reducer, chart) => chart.id === chartParams.measure ? chart : reducer, {});
+            let rows = this.buildRows(chart);
+
+            this.setState({ columns, chart, rows });
+
+        }
+        catch (e) {
+            this.state = {
+                error: e
+            };
+        }
+    }
+
     onChange(newChartId) {
-        let newChart = chartBuilders
-            .reduce((reducer, chart) => chart.id === newChartId ? chart : reducer, {});
-        let rows = this.buildRows(newChart);
-        this.setState({ chart: newChart, rows });
+        const { history } = this.props;
+        history.replace({ pathname: '/chart/' + newChartId });
     }
     render() {
 
-        return (this.state.error ? <div>{this.state.error}</div>:
+        return (this.state.chart ? (
             <div>
                 <div className="row">
                     <div className="col-md-3">
@@ -85,10 +113,10 @@ class ChartSurface extends React.Component {
                 </div>
 
             </div>
-        );
+        ) : <div>{this.state.error}</div>);
     }
 }
 ChartSurface.propTypes = {
     bikes: PropTypes.array.isRequired
 };
-export default ChartSurface;
+export default withRouter(ChartSurface);
