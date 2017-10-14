@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import LoginLink from './LoginLink.jsx';
 import authService from '../../services/authService.js';
 import activitiesService from '../../services/activitiesService';
+import { withRouter } from 'react-router-dom';
 
 class LoginSurface extends React.Component {
     constructor(props) {
@@ -25,10 +26,12 @@ class LoginSurface extends React.Component {
             })
             .then(resp => {
                 this.setState({ msg: `loaded ${resp.body.activityCount} activities` });
-                return this.props.checkAuth();
+                return this.props.history.replace({ pathname: '/' });
 
             });
     }
+
+    
 
     render() {
         return (<div>
@@ -40,4 +43,4 @@ class LoginSurface extends React.Component {
         </div>);
     }
 }
-export default LoginSurface;
+export default withRouter(LoginSurface);
