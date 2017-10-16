@@ -13,20 +13,9 @@ class App extends React.Component {
         this.state = {
             isLoggedIn: false
         };
-        this.checkAuth = this
-            .checkAuth
-            .bind(this);
+      
     }
-    checkAuth() {
-        authService
-            .isAuthenticated()
-            .then(() => {
-                this.setState({ isLoggedIn: true });
-            })
-            .catch(() => {
-                this.setState({ isLoggedIn: false });
-            });
-    }
+
 
     render() {
         return (
@@ -37,15 +26,15 @@ class App extends React.Component {
                         <Route
                             exact
                             path="/login"
-                            render={() => (<LoginSurface checkAuth={this.checkAuth} />)} />
+                            render={() => (<LoginSurface  />)} />
                         <Route
                             path="/:chartType/:measure"
                             render={({ match }) => (
-                                <BikeInfoSurface params={match.params} checkAuth={this.checkAuth} />)} />
+                                <BikeInfoSurface params={match.params}  />)} />
                         <Route
                             path="/"
                             exact
-                            render={() => (<BikeInfoSurface checkAuth={this.checkAuth} />)}>
+                            render={() => (<BikeInfoSurface />)}>
 
 
                         </Route>

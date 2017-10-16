@@ -13,33 +13,20 @@ const authController = {
         return getSessionData(sessionId);
     },
     // for initial account creation
-    connectToStrava: (authCode) => {
+    connectToStrava: async (authCode) => {
 
-        return getAuthToken(authCode)
-            .then(( {access_token }) => {
-                return getAthlete(access_token)
-                    .then( athlete  => { 
-                        return { access_token, athlete };
-                    });
-            })
-            .then(({ access_token, athlete }) => {
-                athlete._id = athlete.id;
+        let { access_token } = await getAuthToken(authCode);
 
-                return insertAthlete(athlete)
-                    .then(() => {
-                        return {
-                            athleteId: athlete.id,
-                            accessToken: access_token
-                        };
-                    });
+        let athlete = await getAthlete(access_token);
 
-            })
-            // create the session and return the session id
-            .then(({ athleteId, accessToken }) => {
-                let sessionId = uuid();
-                return mapTokenToAthlete(athleteId, accessToken, sessionId)
-                    .then(() => sessionId);
-            });
+
+        athlete._id = athlete.id;
+
+        await insertAthlete(athlete);
+            
+        let sessionId = uuid();
+        await mapTokenToAthlete(athlete.id, access_token, sessionId);
+        return sessionId;
     },
 
 

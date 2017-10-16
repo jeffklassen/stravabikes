@@ -9,30 +9,30 @@ let apiRoutes = express.Router();
 
 module.exports = app => {
 
-    apiRoutes.get('/authDetails', (req, res) => {
-        authController.getAuthDetails()
-            .then(authDetails => {
-                res.send(authDetails);
-            });
+    apiRoutes.get('/authDetails', async (req, res) => {
+        let authDetails = await authController.getAuthDetails();
+
+        res.send(authDetails);
+
     });
-    apiRoutes.post('/connectToStrava', (req, res) => {
+    apiRoutes.post('/connectToStrava', async (req, res) => {
+        try {
+            let sessionId = await authController.connectToStrava(req.body.authCode);
 
-        authController
-            .connectToStrava(req.body.authCode)
-            .then(sessionId => {
-                res.cookie('sessionId', sessionId);
-                res.send({ loggedIn: true });
-            })
-            .catch(e => {
-                console.log(e);
-                res.status(500);
-                res.send({status: 'unable to authenticate', e})    ;
-            });
+            res.cookie('sessionId', sessionId);
+            res.send({ loggedIn: true });
+        }
+        catch (e) {
+            console.log(e);
+            res.status(500);
+            res.send({ status: 'unable to authenticate', e });
+        }
     });
 
 
 
-    apiRoutes.use((req, res, next) => {
+
+    apiRoutes.use(async (req, res, next) => {
         console.log(req.url, 'requested');
         let sessionId = req.cookies.sessionId;
         if (!sessionId) {
@@ -41,18 +41,19 @@ module.exports = app => {
             res.send('¡No debe pasar!');
         }
         else {
-            authController
-                .isAuthenticated(req.cookies.sessionId)
-                .then(sessionData => {
-                    console.log('authentication success', sessionData);
-                    req.sessionData = sessionData;
-                    next();
-                })
-                .catch(err => {
-                    console.log('authentication failed', err);
-                    res.status(403);
-                    res.send('¡No debe pasar!');
-                });
+            try {
+                let sessionData = await authController
+                    .isAuthenticated(req.cookies.sessionId);
+
+                console.log('authentication success', sessionData);
+                req.sessionData = sessionData;
+                next();
+            }
+            catch (err) {
+                console.log('authentication failed', err);
+                res.status(403);
+                res.send('¡No debe pasar!');
+            };
         }
     });
 
@@ -62,43 +63,46 @@ module.exports = app => {
         }
         else { res.status(401).send(); }
     });
-    apiRoutes.get('/loadActivities', (req, res) => {
-        athleteController.loadActivities(req.sessionData.accessToken)
-            .then((activites) => {
-                res.send({ activityCount: activites.length });
-            });
+    apiRoutes.get('/loadActivities', async (req, res) => {
+        let activities = await athleteController.loadActivities(req.sessionData.accessToken);
+
+        res.send({ activityCount: activities.length });
+
 
     });
-    apiRoutes.get('/athlete', (req, res) => {
-        athleteController.getAthlete(req.sessionData.athleteId)
-            .then(athlete => {
-                res.send(athlete);
-            });
+    apiRoutes.get('/athlete', async (req, res) => {
+        let athlete = await athleteController.getAthlete(req.sessionData.athleteId);
+
+        res.send(athlete);
+
 
     });
-    apiRoutes.get('/athleteSummary', (req, res) => {
-        athleteController.getSummary(req.sessionData.athleteId)
-            .then(data => {
-                res.send(data);
-            })
-            .catch(err => {
-                res.status(500);
-                res.send(err);
-            });
+    apiRoutes.get('/athleteSummary', async (req, res) => {
+        try {
+            let summary = await athleteController.getSummary(req.sessionData.athleteId);
+
+            res.send(summary);
+        }
+        catch (err) {
+            res.status(500);
+            res.send(err);
+        };
 
     });
-    apiRoutes.get('/activities', (req, res) => {
-        athleteController.getActivities(req.sessionData.athleteId)
-            .then(data => {
-                res.send(data);
-            })
-            .catch(err => {
-                res.status(500);
-                res.send(err);
-            });
+    apiRoutes.get('/activities', async (req, res) => {
+        try {
+            let activities = await athleteController.getActivities(req.sessionData.athleteId);
+
+            res.send(activities);
+        }
+
+        catch (err) {
+            res.status(500);
+            res.send(err);
+        };
 
     });
-    app.use( '/api', apiRoutes);
+    app.use('/api', apiRoutes);
 
 
     clientRoutes.get('/Images*', function (req, res) {
