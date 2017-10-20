@@ -10,16 +10,17 @@ class AppSurface extends React.Component {
         this.isAuthenticated = this.isAuthenticated.bind(this);
         this.isAuthenticated();
     }
-    isAuthenticated() {
-        request.get('/api/isAuthenticated')
-            .then(() => {
-                window.history.pushState('', '', '');
-                this.setState({ ready: true, isLoggedIn: true });
-            })
-            .catch((err) => {
-                console.log('isAuthenticated', err);
-                this.setState({ ready: true, isLoggedIn: false });
-            });
+    async isAuthenticated() {
+        try {
+            await request.get('/api/isAuthenticated')
+
+            window.history.pushState('', '', '');
+            this.setState({ ready: true, isLoggedIn: true });
+        }
+        catch (e) {
+            console.log('isAuthenticated', err);
+            this.setState({ ready: true, isLoggedIn: false });
+        };
     }
     render() {
         return this.state.ready && this.state.isLoggedIn ?

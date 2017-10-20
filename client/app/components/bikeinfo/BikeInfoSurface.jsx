@@ -42,7 +42,7 @@ class BikeInfoSurface extends React.Component {
         this.setState({ activities: null });
         await request.get('/api/loadActivities');
 
-        let resp = request.get('/api/activities');
+        let resp = await request.get('/api/activities');
 
         this.setState({
             activities: resp.body
