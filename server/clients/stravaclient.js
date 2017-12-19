@@ -65,7 +65,7 @@ async function getAthlete(authId) {
             .set(headers);
 
         console.log('RESPONSE')
-        console.log(response);
+        console.log(response.body);
 
         athlete = response.body;
 
@@ -73,7 +73,7 @@ async function getAthlete(authId) {
         throw err;
     }
     console.log('ATHLETE RESPONSE BODY')
-    console.log(response.body)
+    console.log(athlete)
     return athlete;
 }
 
