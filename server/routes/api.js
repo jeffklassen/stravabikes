@@ -29,9 +29,6 @@ module.exports = app => {
         }
     });
 
-
-
-
     apiRoutes.use(async (req, res, next) => {
         console.log(req.url, 'requested');
         let sessionId = req.cookies.sessionId;
