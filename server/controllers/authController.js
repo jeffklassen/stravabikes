@@ -14,16 +14,16 @@ const authController = {
     },
     // for initial account creation
     connectToStrava: async (authCode) => {
+        console.log('connectToStrava called');
 
         let { access_token } = await getAuthToken(authCode);
 
         let athlete = await getAthlete(access_token);
 
-
         athlete._id = athlete.id;
 
         await insertAthlete(athlete);
-            
+
         let sessionId = uuid();
         await mapTokenToAthlete(athlete.id, access_token, sessionId);
         return sessionId;

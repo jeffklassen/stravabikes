@@ -12,7 +12,7 @@ class AppSurface extends React.Component {
     }
     async isAuthenticated() {
         try {
-            await request.get('/api/isAuthenticated')
+            await request.get('/api/isAuthenticated');
 
             window.history.pushState('', '', '');
             this.setState({ ready: true, isLoggedIn: true });

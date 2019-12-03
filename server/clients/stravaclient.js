@@ -8,10 +8,11 @@ async function getAuthToken(authCode) {
         .send({
             client_id: config.strava.authProvider.clientId,
             client_secret: config.strava.clientSecret,
+            scope: config.strava.authProvider.scope,
             code: authCode
         });
 
-    console.log(response.body);
+    console.log('getAuthToken', response.body);
     return response.body;
 
 }
@@ -64,7 +65,7 @@ async function getAthlete(authId) {
             .get(stravaAthleteUrl)
             .set(headers);
 
-        console.log('RESPONSE')
+        console.log('RESPONSE');
         console.log(response.body);
 
         athlete = response.body;
@@ -72,8 +73,8 @@ async function getAthlete(authId) {
     } catch (err) {
         throw err;
     }
-    console.log('ATHLETE RESPONSE BODY')
-    console.log(athlete)
+    console.log('ATHLETE RESPONSE BODY');
+    console.log(athlete);
     return athlete;
 }
 
