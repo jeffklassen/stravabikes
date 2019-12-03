@@ -23,7 +23,7 @@ module.exports = app => {
             res.send({ loggedIn: true });
         }
         catch (e) {
-            console.log(e);
+            //console.log(e);
             res.status(500);
             res.send({ status: 'unable to authenticate', e });
         }

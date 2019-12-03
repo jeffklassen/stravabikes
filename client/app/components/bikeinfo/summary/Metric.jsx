@@ -9,6 +9,7 @@ const Metric = ({summary, metricPreference}) => {
     const fieldStyle = { display: 'block' };
     const summaryStyle = { fontSize: 16, fontWeight: 700, marginLeft: '12px', display: 'inline-block', padding: '14px' };
     const convertedValue = conversionPasser(summary, metricPreference);
+    console.log('metricPreference', metricPreference);
     return (
         <div className="summary" style={summaryStyle}>
             <div style={metricStyle}>{convertedValue.value}</div>

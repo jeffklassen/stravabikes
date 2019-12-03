@@ -18,10 +18,10 @@ class LoginLink extends React.Component {
     async getLoginUrl() {
         let authDetailsResponse = await authService.getStravaAuthDetails();
 
-        let { authUrl, clientId, redirectUri } = authDetailsResponse.body;
+        let { authUrl, clientId, redirectUri, scope } = authDetailsResponse.body;
         if (this._isMounted) {
             this.setState({
-                url: `${authUrl}?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&approval_prompt=auto`
+                url: `${authUrl}?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&approval_prompt=auto&scope=${scope}`
             });
         }
     }
