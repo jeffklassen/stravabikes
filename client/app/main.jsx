@@ -1,18 +1,10 @@
-import * as request from "superagent";
-
-import {
-  Redirect,
-  Route,
-  BrowserRouter as Router,
-  Switch,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 import BikeInfoSurface from "./components/bikeinfo/BikeInfoSurface.jsx";
 import Header from "./components/Header.jsx";
 import LoginSurface from "./components/login/LoginSurface.jsx";
 import React from "react";
 import ReactDOM from "react-dom";
-import authService from "./services/authService.js";
 
 class App extends React.Component {
   constructor(props) {

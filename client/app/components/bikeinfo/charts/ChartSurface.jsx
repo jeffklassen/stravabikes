@@ -4,7 +4,6 @@ import { Chart } from "react-google-charts";
 import ChartChooser from "./ChartChooser.jsx";
 import PropTypes from "prop-types";
 import React from "react";
-import ReactDOM from "react-dom";
 import chartBuilders from "./chartBuilders";
 import { withRouter } from "react-router-dom";
 

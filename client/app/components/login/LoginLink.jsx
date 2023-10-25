@@ -1,5 +1,3 @@
-import * as request from "superagent";
-
 import React from "react";
 import authService from "../../services/authService.js";
 class LoginLink extends React.Component {

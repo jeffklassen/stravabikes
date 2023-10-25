@@ -5,13 +5,15 @@
   "main": "./server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node server/server.js",
-    "webpack": "./node_modules/webpack/bin/webpack.js --config webpack.config.prod.js",
-    "webpack-watch": "./node_modules/webpack/bin/webpack.js --watch --config webpack.config.dev.js"
+    "dev": "vite",
+    "server": "node server/server.js",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@vitejs/plugin-react": "^4.1.0",
     "babel-cli": "^6.22.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
@@ -19,29 +21,31 @@
     "body-parser": "^1.15.2",
     "colors": "^1.1.2",
     "cookie-parser": "^1.4.3",
-    "debug": "^2.3.3",
-    "express": "^4.14.0",
+    "debug": "^4.3.4",
+    "express": "^4.18.2",
     "font-awesome": "^4.7.0",
-    "moment": "^2.17.1",
+    "moment": "^2.29.4",
     "moment-precise-range-plugin": "^1.2.1",
-    "mongodb": "^2.2.22",
-    "morgan": "^1.7.0",
+    "morgan": "^1.10.0",
     "prop-types": "^15.6.0",
-    "query-string": "^4.3.2",
-    "react": "^15.6.0",
-    "react-dom": "^15.6.0",
-    "react-google-charts": "^1.4.2",
-    "react-router-dom": "^4.0.0",
-    "superagent": "^3.4.1",
-    "uuid": "^3.0.1"
+    "query-string": "^8.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-google-charts": "^4.0.1",
+    "react-router-dom": "^6.17.0",
+    "superagent": "^8.1.2",
+    "uuid": "^9.0.1",
+    "vite-tsconfig-paths": "^4.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
-    "babel-eslint": "^7.1.1",
-    "babel-loader": "^6.2.7",
-    "eslint": "^3.18.0",
-    "eslint-plugin-react": "^6.9.0",
-    "webpack": "^2.2.1",
-    "webpack-merge": "^2.6.1"
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^9.1.3",
+    "eslint": "^8.52.0",
+    "eslint-plugin-react": "^7.33.2",
+    "vite": "^4.5.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^5.10.0"
   }
 }
