@@ -1,7 +1,7 @@
-import * as request from 'superagent';
+import * as request from "superagent";
 
 export default {
-    loadActivities: () => {
-        return request.get('/api/loadActivities');
-    }
+  loadActivities: () => {
+    return request.get("/api/loadActivities");
+  },
 };

@@ -7,10 +7,11 @@ A testbed for strava analytics.
 docker, node
 
 ### Getting Started
-
+```
 RUN npm install
 RUN npm run webpack
 CMD PORT=$PORT npm start
+```
 
 ## To Deploy
 
