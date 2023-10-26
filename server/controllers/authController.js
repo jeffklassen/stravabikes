@@ -1,12 +1,14 @@
-import { getAthlete, getAuthToken } from "../clients/stravaclient";
-import {
-  getSessionData,
-  insertAthlete,
-  mapTokenToAthlete,
-} from "../clients/mongoclient";
+import { getAthlete, getAuthToken } from "../clients/stravaclient.js";
 
-import config from "../config/config";
-import uuid from "uuid/v4";
+import { config } from "../config/config.js";
+
+// import uuid from "uuid/v4";
+
+// import {
+//   getSessionData,
+//   insertAthlete,
+//   mapTokenToAthlete,
+// } from "../clients/mongoclient";
 
 const authController = {
   getAuthDetails: () => {
@@ -23,14 +25,15 @@ const authController = {
 
     let { access_token } = await getAuthToken(authCode);
 
-    let athlete = await getAthlete(access_token);
+    // let athlete = await getAthlete(access_token);
 
-    athlete._id = athlete.id;
+    // athlete._id = athlete.id;
 
-    await insertAthlete(athlete);
+    // await insertAthlete(athlete);
 
-    let sessionId = uuid();
-    await mapTokenToAthlete(athlete.id, access_token, sessionId);
+    // let sessionId = uuid();
+    const sessionId = "1234";
+    // await mapTokenToAthlete(athlete.id, access_token, sessionId);
     return sessionId;
   },
 };

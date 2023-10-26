@@ -1,15 +1,14 @@
-const express = require("express");
-const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
-const debug = require("debug")("server:server");
-const http = require("http");
-const routes = require("./routes/api");
-require("colors");
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import debug from "debug";
+import express from "express";
+import http from "http";
+import { routes } from "./routes/api.js";
 
-let app = express();
+export let app = express();
 
 let server = http.createServer(app);
-let port = normalizePort(process.env.PORT || "3000");
+let port = normalizePort(process.env.PORT || "3001");
 
 console.log("Server started on port", port);
 
@@ -109,5 +108,3 @@ function onListening() {
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
 }
-
-module.exports = app;

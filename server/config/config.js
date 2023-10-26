@@ -1,6 +1,9 @@
-const path = require("path");
+import { fileURLToPath } from "url";
+import path from "path";
+const __filename = fileURLToPath(import.meta.url);
 
-let config = {};
+const __dirname = path.dirname(__filename);
+export const config = {};
 config.options = {
   root: path.normalize(__dirname + "/../../client/"),
 };
@@ -17,7 +20,3 @@ config.strava = {
   },
   clientSecret: process.env.CLIENTSECRET,
 };
-
-console.log(config.mongo.url);
-
-module.exports = config;

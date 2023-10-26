@@ -1,6 +1,6 @@
 import * as request from "superagent";
 
-import config from "../config/config";
+import { config } from "../config/config.js";
 
 const stravaAPIURL = "https://www.strava.com/api/v3/";
 async function getAuthToken(authCode) {
