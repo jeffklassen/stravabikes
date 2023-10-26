@@ -3,7 +3,7 @@ import React from "react";
 const Header = () => {
   return (
     <div className="row">
-      <div className="col-md-9">
+      <div className="col-md-4">
         <h1> Track My Bike</h1>
       </div>
       <div className="col-md-3">
