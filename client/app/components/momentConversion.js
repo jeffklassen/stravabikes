@@ -1,4 +1,4 @@
-let moment = require("moment");
+import moment from "moment";
 
 const momentPlugin = (function (moment) {
   var STRINGS = {
