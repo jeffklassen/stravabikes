@@ -19,6 +19,7 @@ export const routes = (app) => {
       res.cookie("sessionId", sessionId);
       res.send({ loggedIn: true });
     } catch (e) {
+      console.error(e);
       res.status(500);
       res.send({ status: "unable to authenticate", e });
     }
@@ -94,18 +95,9 @@ export const routes = (app) => {
   app.use("/api", apiRoutes);
 
   clientRoutes.get("/Images*", function (req, res) {
-    console.log("Images called");
-    res.sendFile(req.path, config.options);
-  });
-  clientRoutes.get("/build*", function (req, res) {
-    console.log("build called");
     res.sendFile(req.path, config.options);
   });
 
-  clientRoutes.get("/*", function (req, res) {
-    console.log("splat called");
-    res.sendFile("index.html", config.options);
-  });
 
   app.use("/", clientRoutes);
 };

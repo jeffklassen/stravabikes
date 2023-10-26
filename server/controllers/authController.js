@@ -25,15 +25,14 @@ const authController = {
 
     let { access_token } = await getAuthToken(authCode);
 
-    // let athlete = await getAthlete(access_token);
+    let athlete = await getAthlete(access_token);
 
-    // athlete._id = athlete.id;
+    athlete._id = athlete.id;
 
-    // await insertAthlete(athlete);
+    await insertAthlete(athlete);
 
-    // let sessionId = uuid();
-    const sessionId = "1234";
-    // await mapTokenToAthlete(athlete.id, access_token, sessionId);
+    let sessionId = uuid();
+    await mapTokenToAthlete(athlete.id, access_token, sessionId);
     return sessionId;
   },
 };

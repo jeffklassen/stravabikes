@@ -7,9 +7,9 @@ config.options = {
 config.strava = {
   authProvider: {
     authUrl: "https://www.strava.com/oauth/authorize",
-    clientId: process.env.NODE_ENV == "dev" ? 5893 : 5893,
+    clientId: 5893,
     redirectUri:
-      process.env.NODE_ENV == "dev"
+      process.env.NODE_ENV === "dev"
         ? "http://localhost:3000/login"
         : "https://trackmybike.herokuapp.com/login",
     scope: "read,activity:read,profile:read_all",

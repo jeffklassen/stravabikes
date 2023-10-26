@@ -43,14 +43,7 @@ app.use(function (err, req, res) {
 
 app.set("port", port);
 
-/**
- *
- * Run the server
- */
 
-/**
- * Listen on provided port, on all network interfaces.
- */
 
 server.listen(port);
 server.on("error", onError);
@@ -104,7 +97,5 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-  debug("Listening on " + bind);
+  console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 }
