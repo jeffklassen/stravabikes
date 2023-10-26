@@ -6,7 +6,6 @@ import Link from "../Link.jsx";
 import React from "react";
 import authService from "../../services/authService.js";
 import { extractMetricPreference } from "./summary/athleteDataManip";
-import { withRouter } from "react-router-dom";
 
 class BikeInfoSurface extends React.Component {
   constructor(props) {
@@ -96,4 +95,4 @@ class BikeInfoSurface extends React.Component {
   }
 }
 
-export default withRouter(BikeInfoSurface);
+export default BikeInfoSurface;

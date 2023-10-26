@@ -5,7 +5,6 @@ import ChartChooser from "./ChartChooser.jsx";
 import PropTypes from "prop-types";
 import React from "react";
 import chartBuilders from "./chartBuilders";
-import { withRouter } from "react-router-dom";
 
 class ChartSurface extends React.Component {
   constructor(props) {
@@ -122,4 +121,4 @@ class ChartSurface extends React.Component {
 ChartSurface.propTypes = {
   bikes: PropTypes.array.isRequired,
 };
-export default withRouter(ChartSurface);
+export default ChartSurface;

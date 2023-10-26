@@ -3,7 +3,6 @@ import React from "react";
 import activitiesService from "../../services/activitiesService";
 import authService from "../../services/authService.js";
 import queryString from "query-string";
-import { withRouter } from "react-router-dom";
 
 class LoginSurface extends React.Component {
   constructor(props) {
@@ -39,4 +38,4 @@ class LoginSurface extends React.Component {
     );
   }
 }
-export default withRouter(LoginSurface);
+export default LoginSurface;

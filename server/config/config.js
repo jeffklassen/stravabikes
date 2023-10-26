@@ -1,13 +1,9 @@
-import { fileURLToPath } from "url";
 import path from "path";
-const __filename = fileURLToPath(import.meta.url);
 
-const __dirname = path.dirname(__filename);
 export const config = {};
 config.options = {
-  root: path.normalize(__dirname + "/../../client/"),
+  root: path.normalize(process.cwd() + "/client/"),
 };
-
 config.strava = {
   authProvider: {
     authUrl: "https://www.strava.com/oauth/authorize",
