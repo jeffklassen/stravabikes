@@ -1,3 +1,9 @@
 export default (sequelize) => {
-  const { Athelete } = sequelize.models;
+  const { Athlete, Activity, Session } = sequelize.models;
+
+  Athlete.hasMany(Activity);
+  Activity.belongsTo(Athlete);
+
+  Athlete.hasOne(Session);
+  Session.belongsTo(Athlete);
 };

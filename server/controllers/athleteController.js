@@ -1,4 +1,6 @@
 import { fullStravaActivities } from "../clients/stravaclient.js";
+import sequelize from "../clients/sqlite.js";
+const { Athlete, Activity } = sequelize.models;
 
 //mapping database fields to front-end names
 const fieldMapping = {
@@ -9,18 +11,21 @@ const fieldMapping = {
 
 const athleteController = {
   loadActivities: async (authId) => {
-    let activities = await fullStravaActivities(authId);
+    const activities = await fullStravaActivities(access_token);
 
-    // return insertActivities(activities);
+    await Activity.bulkCreate(
+      activities.map((activity) => {
+        activity.athleteId = activity.athlete.id;
+        return activity;
+      })
+    );
     return null;
   },
-  getAthlete: (athleteId) => {
-    // return getAthlete(athleteId);
-    return null;
+  getAthlete: async (athleteId) => {
+    return await Athlete.findOne(athleteId);
   },
   getActivities: (athleteId) => {
-    // return listAthleteRides(athleteId);
-    return null;
+    return Activity.findAll({ where: { athleteId } });
   },
   //pull athlete profile, grab sum of relevant summary fields (time, elevation, distance) by bike from DB
   getSummary: async (athleteId) => {

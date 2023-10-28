@@ -13,13 +13,27 @@ class App extends React.Component {
       isLoggedIn: false,
     };
   }
+  async isAuthenticated() {
+    try {
+      await axios.get("/api/isAuthenticated");
+
+      window.history.pushState("", "", "");
+      this.setState({ ready: true, isLoggedIn: true });
+    } catch (e) {
+      console.log("isAuthenticated", err);
+      this.setState({ ready: true, isLoggedIn: false });
+    }
+  }
   render() {
     return (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<BikeInfoSurface />} />
-            <Route path="login" element={<LoginSurface />} />
+            <Route
+              path="login"
+              element={<LoginSurface isAuthenticated={this.isAuthenticated} />}
+            />
             <Route
               path=":chartType/:measure"
               element={({ match }) => <BikeInfoSurface params={match.params} />}

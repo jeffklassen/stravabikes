@@ -1,8 +1,7 @@
-import * as request from "superagent";
-
 import BikeInfoSurface from "./bikeinfo/BikeInfoSurface.jsx";
 import LoginSurface from "./login/LoginSurface.jsx";
 import React from "react";
+import axios from "axios";
 
 class AppSurface extends React.Component {
   constructor(props) {
@@ -13,7 +12,7 @@ class AppSurface extends React.Component {
   }
   async isAuthenticated() {
     try {
-      await request.get("/api/isAuthenticated");
+      await axios.get("/api/isAuthenticated");
 
       window.history.pushState("", "", "");
       this.setState({ ready: true, isLoggedIn: true });

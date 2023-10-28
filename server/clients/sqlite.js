@@ -1,11 +1,12 @@
 import Activity from "../rdb-models/activity.js";
 import Athlete from "../rdb-models/athlete.js";
 import { Sequelize } from "sequelize";
+import Session from "../rdb-models/session.js";
 
 let sequelize;
 
 const initDB = (sequelize) => {
-  const modelDefiners = [Athlete, Activity];
+  const modelDefiners = [Athlete, Activity, Session];
   modelDefiners.forEach((model) => model(sequelize));
 
   // Relationships(sequelize);

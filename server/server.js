@@ -43,8 +43,6 @@ app.use(function (err, req, res) {
 
 app.set("port", port);
 
-
-
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);

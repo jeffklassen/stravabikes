@@ -35,7 +35,6 @@ class BikeInfoSurface extends React.Component {
 
   async refreshActivites() {
     this.setState({ activities: null });
-    await axios.get("/api/loadActivities");
 
     let resp = await axios.get("/api/activities");
 

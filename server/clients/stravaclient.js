@@ -2,7 +2,7 @@ import axios from "axios";
 import { config } from "../config/config.js";
 
 const stravaAPIURL = "https://www.strava.com/api/v3/";
-async function getAuthToken(authCode) {
+const authenticateAndRetrieveAthlete = async (authCode) => {
   try {
     const params = {
       client_id: config.strava.authProvider.clientId,
@@ -25,13 +25,13 @@ async function getAuthToken(authCode) {
   } catch (err) {
     console.error(err.response.data);
   }
-}
+};
 
-async function fullStravaActivities(authId) {
+async function fullStravaActivities(access_token) {
   const stravaActivityUrl = stravaAPIURL + "activities";
-  const headers = { Authorization: `Bearer ${authId}` };
+  const headers = { Authorization: `Bearer ${access_token}` };
 
-  let params = { per_page: 200 };
+  let params = { per_page: 40 };
   let stravaActivities = [];
   let morePages = true;
   let pageCounter = 1;
@@ -39,12 +39,14 @@ async function fullStravaActivities(authId) {
   while (morePages) {
     params.page = pageCounter;
     try {
-      let response = await axios
-        .get(stravaActivityUrl)
-        .query(params)
-        .set(headers);
-      let activities = response.body;
-      stravaActivities = stravaActivities.concat(activities);
+      let response = await axios.get(stravaActivityUrl, {
+        headers,
+        query: params,
+      });
+
+      let activities = response.data;
+      console.log("activities", activities.length);
+      stravaActivities.push(...activities);
       pageCounter++;
       console.log("page returned, got", activities.length);
       if (activities.length < params.per_page) {
@@ -55,31 +57,8 @@ async function fullStravaActivities(authId) {
       throw err;
     }
   }
-  stravaActivities = stravaActivities.map((activity) => {
-    activity._id = activity.id;
-    return activity;
-  });
+
   return stravaActivities;
 }
 
-async function getAthlete(authId) {
-  const stravaAthleteUrl = stravaAPIURL + "athlete";
-  const headers = { Authorization: `Bearer ${authId}` };
-
-  let athlete;
-  try {
-    let response = await axios.get(stravaAthleteUrl, { headers });
-
-    console.log("RESPONSE");
-    console.log(response.body);
-
-    athlete = response.body;
-  } catch (err) {
-    console.error(err.response.data);
-  }
-  console.log("ATHLETE RESPONSE BODY");
-  console.log(athlete);
-  return athlete;
-}
-
-export { getAthlete, fullStravaActivities, getAuthToken };
+export { fullStravaActivities, authenticateAndRetrieveAthlete };

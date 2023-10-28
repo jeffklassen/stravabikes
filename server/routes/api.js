@@ -1,20 +1,22 @@
 import athleteController from "../controllers/athleteController.js";
-import authController from "../controllers/authController.js";
 import { config } from "../config/config.js";
 import express from "express";
+import stravaController from "../controllers/stravaController.js";
 
 let clientRoutes = express.Router();
 let apiRoutes = express.Router();
 
 export const routes = (app) => {
   apiRoutes.get("/authDetails", async (req, res) => {
-    let authDetails = await authController.getAuthDetails();
+    let authDetails = await stravaController.getAuthDetails();
 
     res.send(authDetails);
   });
   apiRoutes.post("/connectToStrava", async (req, res) => {
     try {
-      let sessionId = await authController.connectToStrava(req.body.authCode);
+      let { sessionId } = await stravaController.connectToStravaAndGetData(
+        req.body.authCode
+      );
 
       res.cookie("sessionId", sessionId);
       res.send({ loggedIn: true });
@@ -34,7 +36,7 @@ export const routes = (app) => {
       res.send("¡No debe pasar!");
     } else {
       try {
-        let sessionData = await authController.isAuthenticated(
+        let sessionData = await stravaController.isAuthenticated(
           req.cookies.sessionId
         );
 
@@ -97,7 +99,6 @@ export const routes = (app) => {
   clientRoutes.get("/Images*", function (req, res) {
     res.sendFile(req.path, config.options);
   });
-
 
   app.use("/", clientRoutes);
 };
