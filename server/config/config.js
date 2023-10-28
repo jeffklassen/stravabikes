@@ -7,7 +7,8 @@ config.options = {
 config.strava = {
   authProvider: {
     authUrl: "https://www.strava.com/oauth/authorize",
-    clientId: 5893,
+    // clientId: 5893,
+    clientId: 115782,
     redirectUri:
       process.env.NODE_ENV === "dev"
         ? "http://localhost:3000/login"

@@ -4,22 +4,24 @@ import { config } from "../config/config.js";
 const stravaAPIURL = "https://www.strava.com/api/v3/";
 async function getAuthToken(authCode) {
   try {
-    console.log("getAuthToken", {
+    const params = {
       client_id: config.strava.authProvider.clientId,
       client_secret: config.strava.clientSecret,
-      grant_type: "authorization_code",
       code: authCode,
-    });
-    const response = await axios.post("https://www.strava.com/oauth/token", {
-      client_id: config.strava.authProvider.clientId,
-      client_secret: config.strava.clientSecret,
       grant_type: "authorization_code",
-      code: authCode,
-    });
+    };
+    console.log("getAuthToken", params);
+    const response = await axios.post(
+      "https://www.strava.com/oauth/token",
+      params
+    );
 
-    console.log("getAuthToken response", response);
+    console.log("getAuthToken response", response.data);
 
-    return response.body;
+    return {
+      access_token: response.data.access_token,
+      athlete: response.data.athlete,
+    };
   } catch (err) {
     console.error(err.response.data);
   }
@@ -66,14 +68,14 @@ async function getAthlete(authId) {
 
   let athlete;
   try {
-    let response = await axios.get(stravaAthleteUrl).set(headers);
+    let response = await axios.get(stravaAthleteUrl, { headers });
 
     console.log("RESPONSE");
     console.log(response.body);
 
     athlete = response.body;
   } catch (err) {
-    throw err;
+    console.error(err.response.data);
   }
   console.log("ATHLETE RESPONSE BODY");
   console.log(athlete);

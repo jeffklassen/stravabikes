@@ -1,10 +1,9 @@
-import * as request from "superagent";
-
 import AthleteSummary from "./summary/AthleteSummary.jsx";
 import ChartSurface from "./charts/ChartSurface.jsx";
 import Link from "../Link.jsx";
 import React from "react";
 import authService from "../../services/authService.js";
+import axios from "axios";
 import { extractMetricPreference } from "./summary/athleteDataManip";
 
 class BikeInfoSurface extends React.Component {
@@ -36,9 +35,9 @@ class BikeInfoSurface extends React.Component {
 
   async refreshActivites() {
     this.setState({ activities: null });
-    await request.get("/api/loadActivities");
+    await axios.get("/api/loadActivities");
 
-    let resp = await request.get("/api/activities");
+    let resp = await axios.get("/api/activities");
 
     this.setState({
       activities: resp.body,
@@ -46,8 +45,8 @@ class BikeInfoSurface extends React.Component {
   }
   async loadAthlete() {
     let [summaryResponse, activityResponse] = await Promise.all([
-      request.get("/api/athleteSummary"),
-      request.get("/api/activities"),
+      axios.get("/api/athleteSummary"),
+      axios.get("/api/activities"),
     ]);
 
     let athleteSummary = summaryResponse.body;

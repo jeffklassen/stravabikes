@@ -1,12 +1,12 @@
-import * as request from "superagent";
+import axios from "axios";
 export default {
   completeLoginWithStrava: (authCode) => {
-    return request.post("/api/connectToStrava").send({ authCode });
+    return axios.post("/api/connectToStrava", { authCode });
   },
   getStravaAuthDetails: () => {
-    return request.get("/api/authDetails");
+    return axios.get("/api/authDetails");
   },
   isAuthenticated: () => {
-    return request.get("/api/isAuthenticated");
+    return axios.get("/api/isAuthenticated");
   },
 };

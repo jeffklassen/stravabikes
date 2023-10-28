@@ -1,7 +1,7 @@
-import * as request from "superagent";
+import axios from "axios";
 
 export default {
   loadActivities: () => {
-    return request.get("/api/loadActivities");
+    return axios.get("/api/loadActivities");
   },
 };

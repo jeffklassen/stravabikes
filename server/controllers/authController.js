@@ -1,14 +1,9 @@
-import { getAthlete, getAuthToken } from "../clients/stravaclient.js";
-
 import { config } from "../config/config.js";
+import { getAuthToken } from "../clients/stravaclient.js";
+import sequelize from "../clients/sqlite.js";
+import { v4 as uuid } from "uuid";
 
-// import uuid from "uuid/v4";
-
-// import {
-//   getSessionData,
-//   insertAthlete,
-//   mapTokenToAthlete,
-// } from "../clients/mongoclient";
+const { Athlete } = sequelize.models;
 
 const authController = {
   getAuthDetails: () => {
@@ -23,16 +18,19 @@ const authController = {
   connectToStrava: async (authCode) => {
     console.log("connectToStrava called");
 
-    let { access_token } = await getAuthToken(authCode);
-
-    let athlete = await getAthlete(access_token);
+    let { access_token, athlete } = await getAuthToken(authCode);
 
     athlete._id = athlete.id;
 
-    await insertAthlete(athlete);
+    console.log("athlete", athlete);
+    console.log("access_token", access_token);
+
+    const createdAthlete = await Athlete.create(athlete);
+
+    console.log(createdAthlete);
 
     let sessionId = uuid();
-    await mapTokenToAthlete(athlete.id, access_token, sessionId);
+    // await mapTokenToAthlete(athlete.id, access_token, sessionId);
     return sessionId;
   },
 };
