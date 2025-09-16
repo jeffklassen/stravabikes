@@ -1,8 +1,15 @@
 import React from 'react';
-import Metric from './Metric.jsx';
+import Metric from './Metric';
+import { StravaAthlete } from '../../../../../../types/strava';
+import { ActivitySummary } from '../../../../../../types/models';
 
-const AthleteSummary = ({athlete, summaries}) => {
-    const avatarStyle = { float: 'left', marginRight: '15px', height: '100px', width: '100px', borderRadius: '50%' };
+interface AthleteSummaryProps {
+    athlete: StravaAthlete;
+    summaries?: ActivitySummary[];
+}
+
+const AthleteSummary = ({ athlete, summaries }: AthleteSummaryProps): JSX.Element => {
+    const avatarStyle: React.CSSProperties = { float: 'left', marginRight: '15px', height: '100px', width: '100px', borderRadius: '50%' };
     const bikeCountStyle = { fontWeight: 700, fontSize: 18, color: 'fc4c02' };
     return (
         <div className="col-md-12">
@@ -15,8 +22,8 @@ const AthleteSummary = ({athlete, summaries}) => {
                     <span className="row" style={bikeCountStyle}>{athlete.bikes&&athlete.bikes.length} bikes</span>
                 </div>
                 <div className="summary">
-                    {summaries
-                        .map(function (summary) {
+                    {summaries &&
+                        summaries.map((summary) => {
                             return (
                                 <Metric key={summary.field} summary={summary} metricPreference={athlete.measurement_preference}/>
                             );

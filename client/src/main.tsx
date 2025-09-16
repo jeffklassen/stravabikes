@@ -28,7 +28,7 @@ class App extends React.Component<{}, AppState> {
         <div className="container">
           <Header />
           <Routes>
-            <Route path="/login" element={<LoginSurface />} />
+            <Route path="/login" element={<LoginSurface isAuthenticated={async () => {}} />} />
             <Route
               path="/:chartType/:measure"
               element={<BikeInfoSurface />}

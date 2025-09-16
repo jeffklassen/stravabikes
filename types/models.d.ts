@@ -47,3 +47,8 @@ export interface AppConfig {
   };
   mongo: DatabaseConfig;
 }
+
+export interface ActivitySummary {
+  field: string;
+  total: number;
+}

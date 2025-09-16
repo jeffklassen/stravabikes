@@ -65,7 +65,7 @@ export interface StravaAthlete {
   clubs?: any[];
   ftp?: number;
   weight?: number;
-  bikes?: any[];
+  bikes?: StravaBike[];
   shoes?: any[];
 }
 
@@ -90,4 +90,12 @@ export interface StravaRequestParams {
   page?: number;
   before?: number;
   after?: number;
+}
+
+export interface StravaBike {
+  id: string;
+  name: string;
+  primary?: boolean;
+  resource_state?: number;
+  distance?: number;
 }
