@@ -8,7 +8,7 @@ interface AppSurfaceState {
     isLoggedIn?: boolean;
 }
 
-const AppSurface = (): JSX.Element => {
+const AppSurface = (): React.ReactElement => {
     const [state, setState] = React.useState<AppSurfaceState>({ ready: false });
     const isAuthenticated = React.useCallback(async () => {
         try {

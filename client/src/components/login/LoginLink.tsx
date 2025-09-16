@@ -40,7 +40,7 @@ class LoginLink extends Component<{}, LoginLinkState> {
     }
   }
 
-  render(): JSX.Element {
+  render(): React.ReactElement {
     return this.state.url ? (
       <a href={this.state.url}>
         <img src="./Images/btn_strava_connectwith_orange@2x.png" alt="Connect with Strava" />

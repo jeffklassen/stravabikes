@@ -18,25 +18,27 @@ const collectionNames = {
     activity: 'activity',
     session: 'session'
 };
+let globalClient = null;
 async function getDB() {
-    const client = await mongodb_1.MongoClient.connect(dbURL);
-    return client.db();
+    if (!globalClient) {
+        globalClient = new mongodb_1.MongoClient(dbURL);
+        await globalClient.connect();
+    }
+    return { db: globalClient.db(), client: globalClient };
 }
 async function getCollection(db, collName) {
     return db.collection(collName);
 }
 async function insertObjectToCollection(obj, collName) {
-    const db = await getDB();
+    const { db, client } = await getDB();
     const collection = await getCollection(db, collName);
     await collection.updateOne({ _id: obj._id }, { $set: obj }, { upsert: true });
-    await db.client.close();
     return obj;
 }
 async function getSessionData(sessionId) {
-    const db = await getDB();
+    const { db, client } = await getDB();
     const collection = await getCollection(db, collectionNames.session);
     const sessionData = await collection.findOne({ sessionId: { $eq: sessionId } });
-    await db.client.close();
     return sessionData;
 }
 async function mapTokenToAthlete(athleteId, accessToken, sessionId) {
@@ -49,18 +51,17 @@ async function mapTokenToAthlete(athleteId, accessToken, sessionId) {
     return insertObjectToCollection(mapping, collectionNames.session);
 }
 async function getAthlete(athleteId) {
-    const db = await getDB();
+    const { db, client } = await getDB();
     const collection = await getCollection(db, collectionNames.athlete);
-    const athlete = await collection.findOne({ _id: { $eq: athleteId } });
-    await db.client.close();
+    const athlete = await collection.findOne({ _id: athleteId });
     return athlete;
 }
 async function insertActivities(activities) {
-    const db = await getDB();
+    const { db, client } = await getDB();
     const collection = await getCollection(db, collectionNames.activity);
     const operations = activities.map(activity => ({
         updateOne: {
-            filter: { _id: activity._id },
+            filter: { _id: activity._id || activity.id },
             update: { $set: activity },
             upsert: true
         }
@@ -68,11 +69,10 @@ async function insertActivities(activities) {
     if (operations.length > 0) {
         await collection.bulkWrite(operations);
     }
-    await db.client.close();
     return activities;
 }
 async function listAthleteRides(athleteId) {
-    const db = await getDB();
+    const { db, client } = await getDB();
     const collection = await getCollection(db, collectionNames.activity);
     const activities = await collection
         .find({
@@ -90,7 +90,6 @@ async function listAthleteRides(athleteId) {
     })
         .sort({ start_date_local: 1 })
         .toArray();
-    await db.client.close();
     return activities;
 }
 const insertAthlete = (athlete) => {
@@ -98,14 +97,13 @@ const insertAthlete = (athlete) => {
 };
 exports.insertAthlete = insertAthlete;
 async function rideAggregation(athleteId, field) {
-    const db = await getDB();
+    const { db, client } = await getDB();
     const collection = await getCollection(db, collectionNames.activity);
     const results = await collection.aggregate([
         { $match: { 'athlete.id': athleteId, type: 'Ride' } },
         { $group: { _id: '$gear_id', total: { $sum: `$${field}` } } },
         { $project: { field: field, total: 1 } }
     ]).toArray();
-    await db.client.close();
     return results;
 }
 // For backwards compatibility

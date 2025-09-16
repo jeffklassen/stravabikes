@@ -8,7 +8,7 @@ interface LinkProps {
   style?: CSSProperties;
 }
 
-const Link = ({ children, onClick, style }: LinkProps): JSX.Element => {
+const Link = ({ children, onClick, style }: LinkProps): React.ReactElement => {
   const defaultStyle: CSSProperties = { cursor: 'pointer' };
   const combinedStyle = { ...defaultStyle, ...style };
 

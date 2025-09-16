@@ -22,7 +22,7 @@ class App extends React.Component<{}, AppState> {
     };
   }
 
-  render(): JSX.Element {
+  render(): React.ReactElement {
     return (
       <Router>
         <div className="container">

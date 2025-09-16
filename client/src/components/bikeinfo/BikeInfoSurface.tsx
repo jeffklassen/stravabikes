@@ -23,7 +23,7 @@ interface BikeInfoSurfaceProps {
     measure?: string;
 }
 
-const BikeInfoSurface = (): JSX.Element => {
+const BikeInfoSurface = (): React.ReactElement => {
     const navigate = useNavigate();
     const location = useLocation();
     const params = useParams<{ chartType?: string; measure?: string }>();

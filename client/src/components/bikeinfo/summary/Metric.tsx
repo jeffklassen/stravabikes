@@ -16,7 +16,7 @@ interface MetricProps {
   metricPreference: string;
 }
 
-const Metric = ({ summary, metricPreference }: MetricProps): JSX.Element => {
+const Metric = ({ summary, metricPreference }: MetricProps): React.ReactElement => {
   const metricStyle: CSSProperties = { display: 'block', color: '#fc4c02' };
   const fieldStyle: CSSProperties = { display: 'block' };
   const summaryStyle: CSSProperties = {
