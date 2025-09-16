@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Header = (): JSX.Element => {
+const Header = (): React.ReactElement => {
   return (
     <div className="row">
       <div className="col-md-9">

@@ -10,9 +10,14 @@ const collectionNames: MongoCollectionNames = {
   session: 'session'
 };
 
-async function getDB(): Promise<Db> {
-  const client = await MongoClient.connect(dbURL);
-  return client.db();
+let globalClient: MongoClient | null = null;
+
+async function getDB(): Promise<{ db: Db; client: MongoClient }> {
+  if (!globalClient) {
+    globalClient = new MongoClient(dbURL);
+    await globalClient.connect();
+  }
+  return { db: globalClient.db(), client: globalClient };
 }
 
 async function getCollection(db: Db, collName: string): Promise<Collection> {
@@ -20,19 +25,17 @@ async function getCollection(db: Db, collName: string): Promise<Collection> {
 }
 
 async function insertObjectToCollection(obj: any, collName: string): Promise<any> {
-  const db = await getDB();
+  const { db, client } = await getDB();
   const collection = await getCollection(db, collName);
 
   await collection.updateOne({ _id: obj._id }, { $set: obj }, { upsert: true });
-  await db.client.close();
   return obj;
 }
 
 async function getSessionData(sessionId: string): Promise<SessionData | null> {
-  const db = await getDB();
+  const { db, client } = await getDB();
   const collection = await getCollection(db, collectionNames.session);
-  const sessionData = await collection.findOne({ sessionId: { $eq: sessionId } }) as SessionData | null;
-  await db.client.close();
+  const sessionData = await collection.findOne({ sessionId: { $eq: sessionId } }) as unknown as SessionData | null;
   return sessionData;
 }
 
@@ -47,20 +50,19 @@ async function mapTokenToAthlete(athleteId: number, accessToken: string, session
 }
 
 async function getAthlete(athleteId: number): Promise<AthleteDocument | null> {
-  const db = await getDB();
+  const { db, client } = await getDB();
   const collection = await getCollection(db, collectionNames.athlete);
-  const athlete = await collection.findOne({ _id: { $eq: athleteId } }) as AthleteDocument | null;
-  await db.client.close();
+  const athlete = await collection.findOne({ _id: athleteId } as any) as unknown as AthleteDocument | null;
   return athlete;
 }
 
 async function insertActivities(activities: StravaActivity[]): Promise<StravaActivity[]> {
-  const db = await getDB();
+  const { db, client } = await getDB();
   const collection = await getCollection(db, collectionNames.activity);
 
   const operations = activities.map(activity => ({
     updateOne: {
-      filter: { _id: activity._id },
+      filter: { _id: activity._id || activity.id } as any,
       update: { $set: activity },
       upsert: true
     }
@@ -70,12 +72,11 @@ async function insertActivities(activities: StravaActivity[]): Promise<StravaAct
     await collection.bulkWrite(operations);
   }
 
-  await db.client.close();
   return activities;
 }
 
 async function listAthleteRides(athleteId: number): Promise<ActivityDocument[]> {
-  const db = await getDB();
+  const { db, client } = await getDB();
   const collection = await getCollection(db, collectionNames.activity);
 
   const activities = await collection
@@ -96,9 +97,8 @@ async function listAthleteRides(athleteId: number): Promise<ActivityDocument[]> 
       }
     )
     .sort({ start_date_local: 1 })
-    .toArray() as ActivityDocument[];
+    .toArray() as unknown as ActivityDocument[];
 
-  await db.client.close();
   return activities;
 }
 
@@ -107,7 +107,7 @@ const insertAthlete = (athlete: StravaAthlete): Promise<StravaAthlete> => {
 };
 
 async function rideAggregation(athleteId: number, field: string): Promise<any[]> {
-  const db = await getDB();
+  const { db, client } = await getDB();
   const collection = await getCollection(db, collectionNames.activity);
 
   const results = await collection.aggregate([
@@ -116,7 +116,6 @@ async function rideAggregation(athleteId: number, field: string): Promise<any[]>
     { $project: { field: field, total: 1 } }
   ]).toArray();
 
-  await db.client.close();
   return results;
 }
 

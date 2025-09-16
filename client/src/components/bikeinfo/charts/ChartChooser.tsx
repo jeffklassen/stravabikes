@@ -11,7 +11,7 @@ interface ChartChooserProps {
     currChart: ChartBuilder;
 }
 
-const ChartChooser = ({ onChange, chartBuilders, currChart }: ChartChooserProps): JSX.Element => {
+const ChartChooser = ({ onChange, chartBuilders, currChart }: ChartChooserProps): React.ReactElement => {
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         onChange(e.target.value);
     };

@@ -14,7 +14,7 @@ interface LoginSurfaceProps {
     isAuthenticated: () => Promise<void>;
 }
 
-const LoginSurface = ({ isAuthenticated }: LoginSurfaceProps): JSX.Element => {
+const LoginSurface = ({ isAuthenticated }: LoginSurfaceProps): React.ReactElement => {
     const navigate = useNavigate();
     const location = useLocation();
     const [state, setState] = React.useState<LoginSurfaceState>({});

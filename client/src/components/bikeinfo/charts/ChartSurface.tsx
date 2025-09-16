@@ -4,7 +4,7 @@ import { buildRows, buildColumns } from '../summary/athleteDataManip';
 import ChartChooser from './ChartChooser';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import chartBuilders from './chartBuilders';
-import { StravaActivity, StravaBike } from '../../../../../../types/strava';
+import { StravaActivity, StravaBike } from '../../../../../types/strava';
 
 
 interface ChartSurfaceState {
@@ -22,7 +22,7 @@ interface ChartSurfaceProps {
     children?: React.ReactNode;
 }
 
-const ChartSurface = ({ chartParams, activities, bikes, prefersMetric, children }: ChartSurfaceProps): JSX.Element => {
+const ChartSurface = ({ chartParams, activities, bikes, prefersMetric, children }: ChartSurfaceProps): React.ReactElement => {
     const navigate = useNavigate();
     const location = useLocation();
     const [state, setState] = React.useState<ChartSurfaceState>({});
@@ -85,7 +85,7 @@ const ChartSurface = ({ chartParams, activities, bikes, prefersMetric, children 
             </div>
             <div className="row">
                 <Chart
-                    chartType="AnnotatedTimeLine"
+                    chartType="AnnotationChart"
                     columns={state.columns}
                     rows={state.rows}
                     options={{

@@ -1,14 +1,14 @@
 import React from 'react';
 import Metric from './Metric';
-import { StravaAthlete } from '../../../../../../types/strava';
-import { ActivitySummary } from '../../../../../../types/models';
+import { StravaAthlete } from '../../../../../types/strava';
+import { ActivitySummary } from '../../../../../types/models';
 
 interface AthleteSummaryProps {
     athlete: StravaAthlete;
     summaries?: ActivitySummary[];
 }
 
-const AthleteSummary = ({ athlete, summaries }: AthleteSummaryProps): JSX.Element => {
+const AthleteSummary = ({ athlete, summaries }: AthleteSummaryProps): React.ReactElement => {
     const avatarStyle: React.CSSProperties = { float: 'left', marginRight: '15px', height: '100px', width: '100px', borderRadius: '50%' };
     const bikeCountStyle = { fontWeight: 700, fontSize: 18, color: 'fc4c02' };
     return (
