@@ -4,7 +4,6 @@
   "ignore": ["server/src/**/*.spec.ts", "server/src/**/*.test.ts"],
   "exec": "tsx server/src/server.ts",
   "env": {
-    "NODE_ENV": "development",
     "PORT": "3001"
   }
 }

@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction, Application } from 'express';
 import cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
-import * as debug from 'debug';
+import debug from 'debug';
 import * as http from 'http';
 import setupRoutes from './routes/api';
 import 'colors';
