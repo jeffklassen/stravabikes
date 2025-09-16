@@ -36,11 +36,23 @@
     "uuid": "^3.0.1"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.6",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/express": "^5.0.3",
+    "@types/mongodb": "^4.0.6",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.5.0",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@types/superagent": "^8.1.9",
+    "@types/uuid": "^10.0.0",
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.7",
     "eslint": "^3.18.0",
     "eslint-plugin-react": "^6.9.0",
+    "ts-loader": "^3.5.0",
+    "typescript": "^5.9.2",
     "webpack": "^2.2.1",
     "webpack-merge": "^2.6.1"
   }
