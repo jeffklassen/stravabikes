@@ -110,22 +110,4 @@ export default function setupRoutes(app: Application): void {
   });
 
   app.use('/api', apiRoutes);
-
-  // Client routes
-  clientRoutes.get('/Images*', function (req: Request, res: Response) {
-    console.log('Images called');
-    res.sendFile(req.path, config.options);
-  });
-
-  clientRoutes.get('/build*', function (req: Request, res: Response) {
-    console.log('build called');
-    res.sendFile(req.path, config.options);
-  });
-
-  clientRoutes.get('/*', function (req: Request, res: Response) {
-    console.log('splat called');
-    res.sendFile('index.html', config.options);
-  });
-
-  app.use('/', clientRoutes);
 }
