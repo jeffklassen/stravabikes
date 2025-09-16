@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction, Application } from 'express';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as debug from 'debug';
 import * as http from 'http';
