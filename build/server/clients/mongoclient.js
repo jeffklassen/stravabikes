@@ -10,6 +10,7 @@ exports.getAthlete = getAthlete;
 exports.rideAggregation = rideAggregation;
 exports.mapTokenToAthlete = mapTokenToAthlete;
 exports.getSessionData = getSessionData;
+exports.updateSessionTokens = updateSessionTokens;
 const mongodb_1 = require("mongodb");
 const config_1 = __importDefault(require("../config/config"));
 const dbURL = config_1.default.mongo.url;
@@ -41,12 +42,14 @@ async function getSessionData(sessionId) {
     const sessionData = await collection.findOne({ sessionId: { $eq: sessionId } });
     return sessionData;
 }
-async function mapTokenToAthlete(athleteId, accessToken, sessionId) {
+async function mapTokenToAthlete(athleteId, accessToken, sessionId, refreshToken, expiresAt) {
     const mapping = {
         _id: athleteId,
         athleteId,
         accessToken,
-        sessionId
+        sessionId,
+        refreshToken,
+        expiresAt
     };
     return insertObjectToCollection(mapping, collectionNames.session);
 }
@@ -109,4 +112,15 @@ async function rideAggregation(athleteId, field) {
 // For backwards compatibility
 const listAthleteActivities = listAthleteRides;
 exports.listAthleteActivities = listAthleteActivities;
+async function updateSessionTokens(sessionId, accessToken, refreshToken, expiresAt) {
+    const { db, client } = await getDB();
+    const collection = await getCollection(db, collectionNames.session);
+    await collection.updateOne({ sessionId }, {
+        $set: {
+            accessToken,
+            refreshToken,
+            expiresAt
+        }
+    });
+}
 //# sourceMappingURL=mongoclient.js.map

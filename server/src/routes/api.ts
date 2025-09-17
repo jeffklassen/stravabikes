@@ -59,11 +59,17 @@ export default function setupRoutes(app: Application): void {
 
   apiRoutes.get('/loadActivities', async (req: AuthenticatedRequest, res: Response) => {
     try {
-      if (!req.sessionData) {
+      if (!req.sessionData || !req.sessionData.sessionId) {
         return res.status(401).send('Not authenticated');
       }
 
-      const activities = await athleteController.loadActivities(req.sessionData.accessToken);
+      // Get a valid access token (refreshing if needed)
+      const accessToken = await authController.getValidAccessToken(req.sessionData.sessionId);
+      if (!accessToken) {
+        return res.status(401).send('Unable to get valid access token');
+      }
+
+      const activities = await athleteController.loadActivities(accessToken);
       res.send({ activityCount: activities.length });
     } catch (error) {
       res.status(500).send({ error: 'Failed to load activities' });

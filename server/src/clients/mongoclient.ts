@@ -39,12 +39,14 @@ async function getSessionData(sessionId: string): Promise<SessionData | null> {
   return sessionData;
 }
 
-async function mapTokenToAthlete(athleteId: number, accessToken: string, sessionId: string): Promise<SessionData> {
+async function mapTokenToAthlete(athleteId: number, accessToken: string, sessionId: string, refreshToken?: string, expiresAt?: number): Promise<SessionData> {
   const mapping: SessionData = {
     _id: athleteId,
     athleteId,
     accessToken,
-    sessionId
+    sessionId,
+    refreshToken,
+    expiresAt
   };
   return insertObjectToCollection(mapping, collectionNames.session);
 }
@@ -122,6 +124,22 @@ async function rideAggregation(athleteId: number, field: string): Promise<any[]>
 // For backwards compatibility
 const listAthleteActivities = listAthleteRides;
 
+async function updateSessionTokens(sessionId: string, accessToken: string, refreshToken: string, expiresAt: number): Promise<void> {
+  const { db, client } = await getDB();
+  const collection = await getCollection(db, collectionNames.session);
+
+  await collection.updateOne(
+    { sessionId },
+    {
+      $set: {
+        accessToken,
+        refreshToken,
+        expiresAt
+      }
+    }
+  );
+}
+
 export {
   insertActivities,
   insertAthlete,
@@ -130,5 +148,6 @@ export {
   getAthlete,
   rideAggregation,
   mapTokenToAthlete,
-  getSessionData
+  getSessionData,
+  updateSessionTokens
 };

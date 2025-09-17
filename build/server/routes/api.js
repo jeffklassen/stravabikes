@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = setupRoutes;
 const express_1 = __importDefault(require("express"));
-const config_1 = __importDefault(require("../config/config"));
 const athleteController_1 = __importDefault(require("../controllers/athleteController"));
 const authController_1 = __importDefault(require("../controllers/authController"));
 const clientRoutes = express_1.default.Router();
@@ -60,10 +59,15 @@ function setupRoutes(app) {
     });
     apiRoutes.get('/loadActivities', async (req, res) => {
         try {
-            if (!req.sessionData) {
+            if (!req.sessionData || !req.sessionData.sessionId) {
                 return res.status(401).send('Not authenticated');
             }
-            const activities = await athleteController_1.default.loadActivities(req.sessionData.accessToken);
+            // Get a valid access token (refreshing if needed)
+            const accessToken = await authController_1.default.getValidAccessToken(req.sessionData.sessionId);
+            if (!accessToken) {
+                return res.status(401).send('Unable to get valid access token');
+            }
+            const activities = await athleteController_1.default.loadActivities(accessToken);
             res.send({ activityCount: activities.length });
         }
         catch (error) {
@@ -107,19 +111,5 @@ function setupRoutes(app) {
         }
     });
     app.use('/api', apiRoutes);
-    // Client routes
-    clientRoutes.get('/Images*', function (req, res) {
-        console.log('Images called');
-        res.sendFile(req.path, config_1.default.options);
-    });
-    clientRoutes.get('/build*', function (req, res) {
-        console.log('build called');
-        res.sendFile(req.path, config_1.default.options);
-    });
-    clientRoutes.get('/*', function (req, res) {
-        console.log('splat called');
-        res.sendFile('index.html', config_1.default.options);
-    });
-    app.use('/', clientRoutes);
 }
 //# sourceMappingURL=api.js.map
