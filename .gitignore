@@ -1,4 +1,6 @@
 data/
 node_modules/
 client/build/
+build/
+dist/
 .env
