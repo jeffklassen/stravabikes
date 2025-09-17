@@ -9,6 +9,8 @@ import Link from '../Link';
 import authService from '../../services/authService';
 import { StravaActivity, StravaAthlete } from '../../../../types/strava';
 import { ActivitySummary } from '../../../../types/models';
+import { useTheme } from '../../context/ThemeContext';
+import { getThemeColors } from '../../styles/solarized';
 
 interface BikeInfoSurfaceState {
     summary: any;
@@ -23,6 +25,8 @@ const BikeInfoSurface = (): React.ReactElement => {
     const navigate = useNavigate();
     const location = useLocation();
     const params = useParams<{ chartType?: string; measure?: string }>();
+    const { darkMode } = useTheme();
+    const colors = getThemeColors(darkMode);
     const [state, setState] = React.useState<BikeInfoSurfaceState>({
         summary: {},
         athlete: null
@@ -78,27 +82,40 @@ const BikeInfoSurface = (): React.ReactElement => {
         checkAuth();
     }, [location, checkAuth]);
 
-    return state.athlete ? (
-        <div>
-            <div className="row">
-                <AthleteSummary
-                    athlete={state.athlete}
-                    summaries={state.summaries}
-                />
-            </div>
+    const containerStyle: React.CSSProperties = {
+        backgroundColor: colors.background,
+        minHeight: '100vh',
+        color: colors.textPrimary
+    };
 
-            <div className="row">
-                {state.activities ? (
-                    <ChartSurface
-                        chartParams={params}
-                        activities={state.activities}
-                        bikes={state.athlete.bikes}
-                        prefersMetric={state.prefersMetric}
-                    >
-                        <Link onClick={refreshActivities} style={{ color: 'fc4c02' }}>Refresh Strava Data</Link>
-                    </ChartSurface>
-                ) : <span>Loading... </span>}
-            </div>
+    const loadingStyle: React.CSSProperties = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '200px',
+        fontSize: '16px',
+        color: colors.textSecondary
+    };
+
+    return state.athlete ? (
+        <div style={containerStyle}>
+            <AthleteSummary
+                athlete={state.athlete}
+                summaries={state.summaries}
+            />
+
+            {state.activities ? (
+                <ChartSurface
+                    chartParams={params}
+                    activities={state.activities}
+                    bikes={state.athlete.bikes || []}
+                    prefersMetric={state.prefersMetric}
+                >
+                    <Link onClick={refreshActivities} style={{ color: '#fc4c02' }}>Refresh Strava Data</Link>
+                </ChartSurface>
+            ) : (
+                <div style={loadingStyle}>Loading chart data...</div>
+            )}
         </div>
     ) : null;
 };
