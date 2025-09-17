@@ -51,13 +51,42 @@ const authController = {
     // for initial account creation
     connectToStrava: async (authCode) => {
         console.log('connectToStrava called');
-        const { access_token } = await (0, stravaclient_1.getAuthToken)(authCode);
+        const tokenResponse = await (0, stravaclient_1.getAuthToken)(authCode);
+        const { access_token, refresh_token, expires_at } = tokenResponse;
         const athlete = await (0, stravaclient_1.getAthlete)(access_token);
         athlete._id = athlete.id;
         await (0, mongoclient_1.insertAthlete)(athlete);
         const sessionId = uuid.v4();
-        await (0, mongoclient_1.mapTokenToAthlete)(athlete.id, access_token, sessionId);
+        await (0, mongoclient_1.mapTokenToAthlete)(athlete.id, access_token, sessionId, refresh_token, expires_at);
         return sessionId;
+    },
+    // gets a valid access token, refreshing if needed
+    getValidAccessToken: async (sessionId) => {
+        const sessionData = await (0, mongoclient_1.getSessionData)(sessionId);
+        if (!sessionData) {
+            return null;
+        }
+        // Check if token is expired and needs refresh
+        if (sessionData.expiresAt && (0, stravaclient_1.isTokenExpired)(sessionData.expiresAt)) {
+            if (!sessionData.refreshToken) {
+                console.log('Token expired and no refresh token available');
+                return null;
+            }
+            try {
+                console.log('Token expired, refreshing...');
+                const newTokenData = await (0, stravaclient_1.refreshToken)(sessionData.refreshToken);
+                const { access_token, refresh_token, expires_at } = newTokenData;
+                // Update session with new tokens
+                await (0, mongoclient_1.updateSessionTokens)(sessionId, access_token, refresh_token, expires_at);
+                console.log('Token refreshed successfully');
+                return access_token;
+            }
+            catch (error) {
+                console.log('Token refresh failed:', error);
+                return null;
+            }
+        }
+        return sessionData.accessToken;
     }
 };
 exports.default = authController;

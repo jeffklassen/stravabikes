@@ -79,4 +79,23 @@ async function getAthlete(authId: string): Promise<StravaAthlete> {
   }
 }
 
-export { getAthlete, fullStravaActivities, getAuthToken };
+async function refreshToken(refreshToken: string): Promise<StravaTokenResponse> {
+  const response = await request.post('https://www.strava.com/oauth/token')
+    .send({
+      client_id: config.strava.authProvider.clientId,
+      client_secret: config.strava.clientSecret,
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken
+    });
+
+  console.log('refreshToken', response.body);
+  return response.body as StravaTokenResponse;
+}
+
+function isTokenExpired(expiresAt: number): boolean {
+  const now = Math.floor(Date.now() / 1000);
+  const bufferTime = 5 * 60; // 5 minutes buffer
+  return now >= (expiresAt - bufferTime);
+}
+
+export { getAthlete, fullStravaActivities, getAuthToken, refreshToken, isTokenExpired };

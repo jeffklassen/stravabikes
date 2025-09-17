@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const bodyParser = __importStar(require("body-parser"));
-const debug = __importStar(require("debug"));
+const debug_1 = __importDefault(require("debug"));
 const http = __importStar(require("http"));
 const api_1 = __importDefault(require("./routes/api"));
 require("colors");
@@ -123,7 +123,7 @@ function onListening() {
     const bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + (addr?.port || 'unknown');
-    const debugLog = debug('server:server');
+    const debugLog = (0, debug_1.default)('server:server');
     debugLog('Listening on ' + bind);
 }
 exports.default = app;

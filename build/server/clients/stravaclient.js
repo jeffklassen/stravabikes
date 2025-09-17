@@ -39,6 +39,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAthlete = getAthlete;
 exports.fullStravaActivities = fullStravaActivities;
 exports.getAuthToken = getAuthToken;
+exports.refreshToken = refreshToken;
+exports.isTokenExpired = isTokenExpired;
 const request = __importStar(require("superagent"));
 const config_1 = __importDefault(require("../config/config"));
 const stravaAPIURL = 'https://www.strava.com/api/v3/';
@@ -104,5 +106,21 @@ async function getAthlete(authId) {
     catch (err) {
         throw err;
     }
+}
+async function refreshToken(refreshToken) {
+    const response = await request.post('https://www.strava.com/oauth/token')
+        .send({
+        client_id: config_1.default.strava.authProvider.clientId,
+        client_secret: config_1.default.strava.clientSecret,
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken
+    });
+    console.log('refreshToken', response.body);
+    return response.body;
+}
+function isTokenExpired(expiresAt) {
+    const now = Math.floor(Date.now() / 1000);
+    const bufferTime = 5 * 60; // 5 minutes buffer
+    return now >= (expiresAt - bufferTime);
 }
 //# sourceMappingURL=stravaclient.js.map
