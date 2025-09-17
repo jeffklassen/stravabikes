@@ -20,6 +20,5 @@ const config: AppConfig = {
   }
 };
 
-console.log(config.mongo.url);
 
 export default config;

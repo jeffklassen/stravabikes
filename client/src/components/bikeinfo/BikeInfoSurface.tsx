@@ -18,10 +18,6 @@ interface BikeInfoSurfaceState {
     prefersMetric?: boolean;
 }
 
-interface BikeInfoSurfaceProps {
-    chartType?: string;
-    measure?: string;
-}
 
 const BikeInfoSurface = (): React.ReactElement => {
     const navigate = useNavigate();

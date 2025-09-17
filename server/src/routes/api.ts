@@ -29,7 +29,6 @@ export default function setupRoutes(app: Application): void {
 
   // Authentication middleware
   apiRoutes.use(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    console.log(req.url, 'requested');
     const sessionId = req.cookies.sessionId;
 
     if (!sessionId) {

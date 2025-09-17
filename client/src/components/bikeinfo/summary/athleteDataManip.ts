@@ -76,7 +76,6 @@ function buildRows(activities: ActivityDocument[], bikes: Bike[], rowBuilder: Ro
 }
 
 function buildColumns(bikes: Bike[]): Column[] {
-  console.log('bikes', bikes);
   if (!bikes) {
     throw new Error('bikes must not be null');
   }
