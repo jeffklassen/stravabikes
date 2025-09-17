@@ -57,6 +57,11 @@ export default function setupRoutes(app: Application): void {
     }
   });
 
+  apiRoutes.post('/logout', (req: Request, res: Response) => {
+    res.clearCookie('sessionId');
+    res.send({ loggedOut: true });
+  });
+
   apiRoutes.get('/loadActivities', async (req: AuthenticatedRequest, res: Response) => {
     try {
       if (!req.sessionData || !req.sessionData.sessionId) {

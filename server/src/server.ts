@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express, { Request, Response, NextFunction, Application } from 'express';
 import cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
@@ -12,7 +13,13 @@ interface AppError extends Error {
 
 const app: Application = express();
 const server = http.createServer(app);
-const port = normalizePort(process.env.PORT || '3000');
+
+console.log('Environment PORT:', process.env.PORT);
+console.log('Environment STRAVA_CLIENT_ID:', process.env.STRAVA_CLIENT_ID);
+console.log('Environment STRAVA_CLIENT_SECRET:', process.env.STRAVA_CLIENT_SECRET ? 'SET' : 'NOT SET');
+console.log('Nodemon config updated - checking port again');
+
+const port = normalizePort(process.env.PORT || '3501');
 
 console.log('Server started on port', port);
 
