@@ -14,7 +14,6 @@ async function getAuthToken(authCode: string): Promise<StravaTokenResponse> {
       grant_type: 'authorization_code'
     });
 
-  console.log('getAuthToken', response.body);
   return response.body as StravaTokenResponse;
 }
 
@@ -38,13 +37,11 @@ async function fullStravaActivities(authId: string): Promise<StravaActivity[]> {
       const activities: StravaActivity[] = response.body;
       stravaActivities = stravaActivities.concat(activities);
       pageCounter++;
-      console.log('page returned, got', activities.length);
 
       if (activities.length < (params.per_page || 200)) {
         morePages = false;
       }
     } catch (err) {
-      console.log(err);
       throw err;
     }
   }
@@ -66,12 +63,7 @@ async function getAthlete(authId: string): Promise<StravaAthlete> {
       .get(stravaAthleteUrl)
       .set(headers);
 
-    console.log('RESPONSE');
-    console.log(response.body);
-
     const athlete: StravaAthlete = response.body;
-    console.log('ATHLETE RESPONSE BODY');
-    console.log(athlete);
 
     return athlete;
   } catch (err) {
@@ -88,7 +80,6 @@ async function refreshToken(refreshToken: string): Promise<StravaTokenResponse> 
       refresh_token: refreshToken
     });
 
-  console.log('refreshToken', response.body);
   return response.body as StravaTokenResponse;
 }
 

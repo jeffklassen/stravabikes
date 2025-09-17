@@ -9,10 +9,6 @@ interface AppState {
   isLoggedIn: boolean;
 }
 
-interface RouteParams {
-  chartType: string;
-  measure: string;
-}
 
 class App extends React.Component<{}, AppState> {
   constructor(props: {}) {

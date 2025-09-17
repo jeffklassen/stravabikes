@@ -5,7 +5,6 @@ import * as bodyParser from 'body-parser';
 import debug from 'debug';
 import * as http from 'http';
 import setupRoutes from './routes/api';
-import 'colors';
 
 interface AppError extends Error {
   status?: number;
@@ -14,10 +13,6 @@ interface AppError extends Error {
 const app: Application = express();
 const server = http.createServer(app);
 
-console.log('Environment PORT:', process.env.PORT);
-console.log('Environment STRAVA_CLIENT_ID:', process.env.STRAVA_CLIENT_ID);
-console.log('Environment STRAVA_CLIENT_SECRET:', process.env.STRAVA_CLIENT_SECRET ? 'SET' : 'NOT SET');
-console.log('Nodemon config updated - checking port again');
 
 const port = normalizePort(process.env.PORT || '3501');
 

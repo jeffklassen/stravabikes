@@ -28,7 +28,6 @@ const Metric = ({ summary, metricPreference }: MetricProps): React.ReactElement 
   };
 
   const convertedValue = conversionPasser(summary, metricPreference);
-  console.log('metricPreference', metricPreference);
 
   return (
     <div className="summary" style={summaryStyle}>

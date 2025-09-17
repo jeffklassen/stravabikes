@@ -24,7 +24,6 @@ const authController: AuthController = {
 
   // for initial account creation
   connectToStrava: async (authCode: string): Promise<string> => {
-    console.log('connectToStrava called');
 
     const tokenResponse = await getAuthToken(authCode);
     const { access_token, refresh_token, expires_at } = tokenResponse;
@@ -48,21 +47,17 @@ const authController: AuthController = {
     // Check if token is expired and needs refresh
     if (sessionData.expiresAt && isTokenExpired(sessionData.expiresAt)) {
       if (!sessionData.refreshToken) {
-        console.log('Token expired and no refresh token available');
         return null;
       }
 
       try {
-        console.log('Token expired, refreshing...');
         const newTokenData = await refreshToken(sessionData.refreshToken);
         const { access_token, refresh_token, expires_at } = newTokenData;
 
         // Update session with new tokens
         await updateSessionTokens(sessionId, access_token, refresh_token, expires_at);
-        console.log('Token refreshed successfully');
         return access_token;
       } catch (error) {
-        console.log('Token refresh failed:', error);
         return null;
       }
     }
