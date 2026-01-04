@@ -1,0 +1,1 @@
+- Start MongoDB before starting the server: `docker compose up -d` then `npm run dev`
