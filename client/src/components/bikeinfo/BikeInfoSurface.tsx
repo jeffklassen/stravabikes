@@ -16,6 +16,7 @@ interface BikeInfoSurfaceState {
     summary: any;
     athlete: StravaAthlete | null;
     summaries?: ActivitySummary[];
+    firstRideDate?: string | null;
     activities?: StravaActivity[] | null;
     prefersMetric?: boolean;
 }
@@ -67,6 +68,7 @@ const BikeInfoSurface = (): React.ReactElement => {
             summary: {},
             athlete: athleteSummary.athlete,
             summaries: athleteSummary.summary,
+            firstRideDate: athleteSummary.firstRideDate,
             activities: activityResponse.body,
             prefersMetric
         });
@@ -102,6 +104,7 @@ const BikeInfoSurface = (): React.ReactElement => {
             <AthleteSummary
                 athlete={state.athlete}
                 summaries={state.summaries}
+                firstRideDate={state.firstRideDate}
             />
 
             {state.activities ? (

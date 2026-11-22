@@ -8,9 +8,10 @@ import { getThemeColors } from '../../../styles/solarized';
 interface AthleteSummaryProps {
     athlete: StravaAthlete;
     summaries?: ActivitySummary[];
+    firstRideDate?: string | null;
 }
 
-const AthleteSummary = ({ athlete, summaries }: AthleteSummaryProps): React.ReactElement => {
+const AthleteSummary = ({ athlete, summaries, firstRideDate }: AthleteSummaryProps): React.ReactElement => {
     const { darkMode } = useTheme();
     const colors = getThemeColors(darkMode);
 
@@ -64,6 +65,11 @@ const AthleteSummary = ({ athlete, summaries }: AthleteSummaryProps): React.Reac
         justifyContent: 'flex-start'
     };
 
+    // months between the first ride and now, used for per-month averages
+    const monthsActive = firstRideDate
+        ? Math.max(1, (Date.now() - new Date(firstRideDate).getTime()) / (1000 * 60 * 60 * 24 * 30.4375))
+        : undefined;
+
     const activeBikes = athlete.bikes?.filter(bike => bike.distance && bike.distance > 0) || [];
 
     return (
@@ -86,6 +92,7 @@ const AthleteSummary = ({ athlete, summaries }: AthleteSummaryProps): React.Reac
                                 key={summary.field}
                                 summary={summary}
                                 metricPreference={athlete.measurement_preference || 'feet'}
+                                monthsActive={monthsActive}
                                 darkMode={darkMode}
                             />
                         );

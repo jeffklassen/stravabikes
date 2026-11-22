@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react';
-import { formatDuration, intervalToDuration } from 'date-fns';
 import { getThemeColors } from '../../../styles/solarized';
 
 interface Summary {
@@ -17,11 +16,12 @@ interface ConvertedValue {
 interface StatsCardProps {
   summary: Summary;
   metricPreference: string;
+  monthsActive?: number;
   darkMode?: boolean;
 }
 
-const StatsCard = ({ summary, metricPreference, darkMode = false }: StatsCardProps): React.ReactElement => {
-  const convertedValue = conversionPasser(summary, metricPreference);
+const StatsCard = ({ summary, metricPreference, monthsActive, darkMode = false }: StatsCardProps): React.ReactElement => {
+  const convertedValue = conversionPasser(summary, metricPreference, monthsActive);
   const colors = getThemeColors(darkMode);
 
   const cardStyle: CSSProperties = {
@@ -91,100 +91,69 @@ const StatsCard = ({ summary, metricPreference, darkMode = false }: StatsCardPro
 };
 
 // determines the summary type for conversion, passes to appropriate conversion function
-function conversionPasser(summary: Summary, metricPreference: string): ConvertedValue {
+function conversionPasser(summary: Summary, metricPreference: string, monthsActive?: number): ConvertedValue {
   if (summary.field === 'Time') {
-    return timeConverter(summary.total);
+    return timeConverter(summary.total, monthsActive);
   } else if (summary.field === 'Elevation') {
-    return elevationConverter(summary.total, metricPreference);
+    return elevationConverter(summary.total, metricPreference, monthsActive);
   } else if (summary.field === 'Distance') {
-    return distanceConverter(summary.total, metricPreference);
+    return distanceConverter(summary.total, metricPreference, monthsActive);
   }
 
   return { label: 'Unknown', value: '0' };
 }
 
-// convert time in seconds to human readable time
-function timeConverter(timeInSeconds: number): ConvertedValue {
-  const duration = intervalToDuration({ start: 0, end: timeInSeconds * 1000 });
+// "123 mi/month avg", or undefined when we don't know how long the athlete has been riding
+function monthlyAverage(total: number, unit: string, monthsActive?: number): string | undefined {
+  if (!monthsActive) return undefined;
+  return `${addCommas(Math.round(total / monthsActive))} ${unit}/month avg`;
+}
 
-  // Create a more concise format
-  const parts = [];
-  if (duration.years) parts.push(`${duration.years}y`);
-  if (duration.months) parts.push(`${duration.months}mo`);
-  if (duration.days) parts.push(`${duration.days}d`);
-  if (duration.hours) parts.push(`${duration.hours}h`);
-  if (duration.minutes && parts.length < 3) parts.push(`${duration.minutes}m`);
+// abbreviate large numbers: 1.6M, 17.3k, 950
+function abbreviate(num: number): string {
+  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+  if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+  return addCommas(Math.round(num));
+}
 
-  const mainValue = parts.slice(0, 2).join(' ') || '0m';
-  const subtitle = parts.length > 2 ? `+ ${parts.slice(2).join(' ')}` : undefined;
+// convert moving time in seconds to total hours
+function timeConverter(timeInSeconds: number, monthsActive?: number): ConvertedValue {
+  const hours = timeInSeconds / 3600;
 
   return {
     label: 'Time on Bike',
-    value: mainValue,
-    subtitle
+    value: addCommas(Math.round(hours)),
+    unit: 'h',
+    subtitle: monthlyAverage(hours, 'h', monthsActive)
   };
 }
 
 // convert distance in meters to either miles/km based on user preference
-function distanceConverter(distanceInMeters: number, metricPreference: string): ConvertedValue {
-  if (metricPreference === 'feet') {
-    const miles = distanceInMeters * 0.000621371;
-    const value = miles >= 1000
-      ? (miles / 1000).toFixed(1) + 'k'
-      : addCommas(Math.round(miles));
+function distanceConverter(distanceInMeters: number, metricPreference: string, monthsActive?: number): ConvertedValue {
+  const imperial = metricPreference === 'feet';
+  const distance = imperial ? distanceInMeters * 0.000621371 : distanceInMeters * 0.001;
+  const unit = imperial ? 'mi' : 'km';
 
-    return {
-      label: 'Total Distance',
-      value,
-      unit: 'mi',
-      subtitle: `${Math.round(miles / 12)} mi/month avg`
-    };
-  } else {
-    const km = distanceInMeters * 0.001;
-    const value = km >= 1000
-      ? (km / 1000).toFixed(1) + 'k'
-      : addCommas(Math.round(km));
-
-    return {
-      label: 'Total Distance',
-      value,
-      unit: 'km',
-      subtitle: `${Math.round(km / 12)} km/month avg`
-    };
-  }
+  return {
+    label: 'Total Distance',
+    value: abbreviate(distance),
+    unit,
+    subtitle: monthlyAverage(distance, unit, monthsActive)
+  };
 }
 
 // convert elevation gain to feet/meters based on user preference
-function elevationConverter(elevationinMeters: number, metricPreference: string): ConvertedValue {
-  if (metricPreference === 'feet') {
-    const feet = elevationinMeters * 3.28084;
-    const value = feet >= 1000000
-      ? (feet / 1000000).toFixed(1) + 'M'
-      : feet >= 1000
-        ? (feet / 1000).toFixed(0) + 'k'
-        : addCommas(Math.round(feet));
+function elevationConverter(elevationInMeters: number, metricPreference: string, monthsActive?: number): ConvertedValue {
+  const imperial = metricPreference === 'feet';
+  const elevation = imperial ? elevationInMeters * 3.28084 : elevationInMeters;
+  const unit = imperial ? 'ft' : 'm';
 
-    return {
-      label: 'Total Climbing',
-      value,
-      unit: 'ft',
-      subtitle: `${Math.round(feet / 12)} ft/month avg`
-    };
-  } else {
-    const meters = elevationinMeters;
-    const value = meters >= 1000000
-      ? (meters / 1000000).toFixed(1) + 'M'
-      : meters >= 1000
-        ? (meters / 1000).toFixed(0) + 'k'
-        : addCommas(Math.round(meters));
-
-    return {
-      label: 'Total Climbing',
-      value,
-      unit: 'm',
-      subtitle: `${Math.round(meters / 12)} m/month avg`
-    };
-  }
+  return {
+    label: 'Total Climbing',
+    value: abbreviate(elevation),
+    unit,
+    subtitle: monthlyAverage(elevation, unit, monthsActive)
+  };
 }
 
 // adds commas to numbers for readability

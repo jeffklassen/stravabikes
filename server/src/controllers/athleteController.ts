@@ -1,4 +1,4 @@
-import { getAthlete, rideAggregation, listAthleteRides, insertActivities } from '../clients/mongoclient';
+import { getAthlete, rideAggregation, firstRideDate, listAthleteRides, insertActivities } from '../clients/mongoclient';
 import { fullStravaActivities } from '../clients/stravaclient';
 import { StravaActivity, StravaAthlete } from '../../../types/strava';
 import { AthleteDocument, ActivityDocument } from '../../../types/models';
@@ -18,6 +18,7 @@ interface SummaryAggregation {
 interface SummaryResponse {
   athlete: AthleteDocument | null;
   summary: SummaryAggregation[];
+  firstRideDate: string | null;
 }
 
 interface AthleteController {
@@ -54,7 +55,8 @@ const athleteController: AthleteController = {
       getAthlete(athleteId),
       rideAggregation(athleteId, fieldMapping.distance.fieldName),
       rideAggregation(athleteId, fieldMapping.elevation.fieldName),
-      rideAggregation(athleteId, fieldMapping.time.fieldName)
+      rideAggregation(athleteId, fieldMapping.time.fieldName),
+      firstRideDate(athleteId)
     ]);
 
     const athlete = data[0];
@@ -85,7 +87,7 @@ const athleteController: AthleteController = {
           }, {} as SummaryAggregation);
       });
 
-    return { athlete, summary: modifiedAggregations };
+    return { athlete, summary: modifiedAggregations, firstRideDate: data[4] };
   }
 };
 

@@ -121,6 +121,19 @@ async function rideAggregation(athleteId: number, field: string): Promise<any[]>
   return results;
 }
 
+async function firstRideDate(athleteId: number): Promise<string | null> {
+  const { db } = await getDB();
+  const collection = await getCollection(db, collectionNames.activity);
+
+  const first = await collection
+    .find({ 'athlete.id': athleteId, type: 'Ride' }, { projection: { start_date: 1 } })
+    .sort({ start_date: 1 })
+    .limit(1)
+    .next();
+
+  return first ? (first.start_date as string) : null;
+}
+
 // For backwards compatibility
 const listAthleteActivities = listAthleteRides;
 
@@ -147,6 +160,7 @@ export {
   listAthleteActivities,
   getAthlete,
   rideAggregation,
+  firstRideDate,
   mapTokenToAthlete,
   getSessionData,
   updateSessionTokens
